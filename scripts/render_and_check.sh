@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Native Windows tools (poppler, MiKTeX) take Windows-style paths; Git Bash
+# may run without MSYS path conversion, so convert explicitly when possible.
+to_windows_path() { command -v cygpath >/dev/null 2>&1 && cygpath -m "$1" || printf '%s' "$1"; }
+
 if [[ $# -lt 1 || $# -gt 4 ]]; then
   echo "Usage: render_and_check.sh DECK.tex [RENDER_DIR] [FIRST_PAGE] [LAST_PAGE]" >&2
   exit 64
@@ -50,7 +54,7 @@ if grep -E -n 'Overfull \\[hv]box|LaTeX Error|Package .* Error' "$log_path"; the
   exit 65
 fi
 
-page_count="$(pdfinfo "$pdf_path" | awk '/^Pages:/ {print $2}')"
+page_count="$(pdfinfo "$(to_windows_path "$pdf_path")" | awk '/^Pages:/ {print $2}')"
 if [[ -z "$last_page" ]]; then
   last_page="$page_count"
 fi
@@ -67,7 +71,7 @@ fi
 mkdir -p "$render_dir"
 render_dir="$(cd "$render_dir" && pwd)"
 pdftoppm -png -r 200 -f "$first_page" -l "$last_page" \
-  "$pdf_path" "$render_dir/$deck_stem-page"
+  "$(to_windows_path "$pdf_path")" "$(to_windows_path "$render_dir/$deck_stem-page")"
 
 echo "PDF: $pdf_path"
 echo "Pages: $page_count"

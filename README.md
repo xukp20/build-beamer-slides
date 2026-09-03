@@ -164,7 +164,7 @@ Compile and render every bundled deck with:
 scripts/validate_examples.sh /tmp/beamer-example-review
 ```
 
-The built-in styles use fonts available through XeLaTeX. A custom style should document any additional font or asset requirements.
+The built-in styles use the TeX Gyre font family (such as `TeX Gyre Heros`), which ships with TeX Live and MiKTeX but is not available in a bare XeLaTeX install. If the first build reports `The font "TeX Gyre Heros" cannot be found`, update the package database once and retry: TeX Live `tlmgr update`, MiKTeX `mpm --find-updates` (or MiKTeX Console → Check for updates) — a fresh MiKTeX keeps on-the-fly package installation disabled until that check. A custom style should document any additional font or asset requirements.
 
 ## Worked source files
 
