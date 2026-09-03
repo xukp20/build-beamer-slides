@@ -17,6 +17,11 @@ else
   output_root="$(mktemp -d)"
 fi
 
+# Build in a temporary copy so committed example PDFs stay untouched
+source_copy="$(mktemp -d)"
+trap 'rm -rf "$source_copy"' EXIT
+cp -R "$project_dir/." "$source_copy/"
+
 decks=(
   "styles/light/template-169.tex"
   "styles/warm-editorial/template-169.tex"
@@ -33,7 +38,7 @@ for relative_deck in "${decks[@]}"; do
   render_name="${relative_deck%.tex}"
   render_name="${render_name//\//-}"
   "$script_dir/render_and_check.sh" \
-    "$project_dir/$relative_deck" \
+    "$source_copy/$relative_deck" \
     "$output_root/$render_name"
 done
 

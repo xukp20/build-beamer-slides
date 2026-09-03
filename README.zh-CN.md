@@ -164,7 +164,7 @@ scripts/render_pdf_crop.sh \
 scripts/validate_examples.sh /tmp/beamer-example-review
 ```
 
-内置风格使用 XeLaTeX 可用字体。自定义风格应单独说明额外的字体或素材依赖。
+内置风格使用 TeX Gyre 字体族（如 `TeX Gyre Heros`），该字体随 TeX Live 与 MiKTeX 发行，并非所有裸 XeLaTeX 安装都可用。若首次编译报 `The font "TeX Gyre Heros" cannot be found`，请先执行一次包数据库更新后重试：TeX Live 用 `tlmgr update`，MiKTeX 用 `mpm --find-updates`（或 MiKTeX Console → Check for updates）——全新 MiKTeX 在该检查完成前会禁用按需安装。自定义风格应单独说明额外的字体或素材依赖。
 
 ## 完整示例源码
 
