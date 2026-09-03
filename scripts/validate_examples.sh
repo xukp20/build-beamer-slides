@@ -17,10 +17,20 @@ else
   output_root="$(mktemp -d)"
 fi
 
-# Build in a temporary copy so committed example PDFs stay untouched
+# Build from a clean copy of the current source tree so validation neither
+# rewrites committed PDFs nor reuses LaTeX intermediates and rendered previews.
 source_copy="$(mktemp -d)"
 trap 'rm -rf "$source_copy"' EXIT
-cp -R "$project_dir/." "$source_copy/"
+while IFS= read -r -d '' relative_path; do
+  case "$relative_path" in
+    *.pdf) continue ;;
+  esac
+  mkdir -p "$source_copy/$(dirname "$relative_path")"
+  cp "$project_dir/$relative_path" "$source_copy/$relative_path"
+done < <(
+  git -C "$project_dir" ls-files -z --cached --others --exclude-standard -- \
+    styles examples
+)
 
 decks=(
   "styles/light/template-169.tex"
