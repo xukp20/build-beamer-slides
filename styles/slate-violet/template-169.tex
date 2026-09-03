@@ -1,0 +1,94 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{theme.tex}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BSVLavender]
+      ([xshift=10.65cm]current page.north west) rectangle (current page.south east);
+    \fill[BSVPrimary]
+      ([xshift=0.90cm,yshift=-1.15cm]current page.north west) rectangle
+      ([xshift=1.02cm,yshift=-7.85cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,
+          font=\fontsize{7}{8.5}\selectfont\bfseries]
+      at ([xshift=1.38cm,yshift=-1.38cm]current page.north west)
+      {TECHNICAL REVIEW};
+    \node[anchor=north west,inner sep=0pt,text=BSVPrimary,
+          font=\fontsize{23}{27}\selectfont\bfseries,text width=8.6cm]
+      at ([xshift=1.38cm,yshift=-2.10cm]current page.north west)
+      {A clear review};
+    \node[anchor=north west,inner sep=0pt,text=BSVText,
+          font=\fontsize{10}{13}\selectfont,text width=7.9cm]
+      at ([xshift=1.40cm,yshift=-4.30cm]current page.north west)
+      {Purpose and scope in one concise sentence};
+    \node[anchor=south west,inner sep=0pt,text=BSVMuted,
+          font=\fontsize{7.2}{9}\selectfont]
+      at ([xshift=1.40cm,yshift=0.72cm]current page.south west)
+      {Presenter · Organization · Date};
+    \node[slate/card,minimum width=3.25cm,minimum height=1.02cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-2.45cm]current page.north west)
+      {\SlateTag[BSVSage]{LAYER 1}\hspace{0.14cm}\textcolor{BSVPrimary}{\bfseries Interface}};
+    \node[slate/card,minimum width=3.25cm,minimum height=1.02cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-4.28cm]current page.north west)
+      {\SlateTag[BSVLavender]{LAYER 2}\hspace{0.14cm}\textcolor{BSVPrimary}{\bfseries Control}};
+    \node[slate/card,minimum width=3.25cm,minimum height=1.02cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-6.11cm]current page.north west)
+      {\SlateTag[BSVSand]{LAYER 3}\hspace{0.14cm}\textcolor{BSVPrimary}{\bfseries Runtime}};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \SlateFrameHeader{Use hierarchy to explain the relationship}{CONTENT}{02}
+
+    \fill[BSVPanel,rounded corners=4pt]
+      ([xshift=0.92cm,yshift=-1.55cm]current page.north west) rectangle
+      ([xshift=11.82cm,yshift=-6.05cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,font=\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=1.18cm,yshift=-1.80cm]current page.north west) {PROCESS};
+
+    \node[slate/action,text width=2.15cm,minimum height=1.34cm]
+      (a) at ([xshift=2.45cm,yshift=-3.46cm]current page.north west)
+      {\SlateTag[BSVLavender]{INPUT}\\[3.6pt]
+       \textcolor{BSVPrimary}{\bfseries Source material}\\[1.8pt]
+       \textcolor{BSVMuted}{One short note}};
+    \node[slate/action,text width=2.15cm,minimum height=1.34cm]
+      (b) at ([xshift=6.36cm,yshift=-3.46cm]current page.north west)
+      {\SlateTag[BSVSage]{ACTION}\\[3.6pt]
+       \textcolor{BSVPrimary}{\bfseries Review}\\[1.8pt]
+       \textcolor{BSVMuted}{One short note}};
+    \node[slate/action,text width=2.15cm,minimum height=1.34cm]
+      (c) at ([xshift=10.27cm,yshift=-3.46cm]current page.north west)
+      {\SlateTag[BSVSand]{OUTPUT}\\[3.6pt]
+       \textcolor{BSVPrimary}{\bfseries Accepted result}\\[1.8pt]
+       \textcolor{BSVMuted}{One short note}};
+    \draw[slate/flow] (a.east) -- (b.west);
+    \draw[slate/flow] (b.east) -- node[slate/edge label,midway] {accepted} (c.west);
+    \coordinate (revisionlane) at ([yshift=-0.72cm]c.south);
+    \draw[slate/optional] (c.south) -- (revisionlane) -| (b.south);
+    \node[slate/adjacent label,anchor=south]
+      at ([xshift=-1.75cm,yshift=0.08cm]revisionlane) {optional revision};
+
+    \fill[BSVLavender,rounded corners=3pt]
+      ([xshift=12.18cm,yshift=-1.55cm]current page.north west) rectangle
+      ([xshift=15.20cm,yshift=-6.05cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slate/prose,text width=2.58cm]
+      at ([xshift=12.42cm,yshift=-1.92cm]current page.north west)
+      {\color{BSVPrimary}\fontsize{8.1}{9.8}\selectfont\bfseries Interpretation\par
+       \vspace{0.18cm}
+       \color{BSVText}\mdseries\fontsize{6.7}{8.5}\selectfont
+       Explain the decision shown in the diagram. Keep the note concise.\par};
+
+    \node[anchor=north west,inner sep=0pt,slate/prose,text width=10.30cm]
+      at ([xshift=1.05cm,yshift=-6.45cm]current page.north west)
+      {\color{BSVPrimary}\fontsize{8.1}{9.8}\selectfont\bfseries Supporting statement\par
+       \vspace{0.14cm}
+       \color{BSVText}\mdseries\fontsize{6.8}{8.7}\selectfont
+       Use complete, direct language. Keep text, rules, connectors, and container boundaries visibly separated.\par};
+
+    \SlateFrameFooter{Slate Violet light style · reusable 16:9 starter}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

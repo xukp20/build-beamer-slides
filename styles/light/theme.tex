@@ -1,0 +1,99 @@
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta,backgrounds,calc,fit,positioning,shapes.geometric}
+
+\setsansfont{TeX Gyre Heros}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{BMSNavy}{HTML}{17324D}
+\definecolor{BMSText}{HTML}{3F4A54}
+\definecolor{BMSMuted}{HTML}{78838D}
+\definecolor{BMSLine}{HTML}{C9D0D5}
+\definecolor{BMSPanel}{HTML}{F4F6F7}
+\definecolor{BMSSoftBlue}{HTML}{E9EFF3}
+\definecolor{BMSSoftGreen}{HTML}{EAF3EE}
+\definecolor{BMSSoftOrange}{HTML}{F5EEE6}
+\definecolor{BMSWhite}{HTML}{FFFFFF}
+\definecolor{BMSFlow}{HTML}{486274}
+\definecolor{BMSReturn}{HTML}{6A978E}
+\definecolor{BMSOptional}{HTML}{88949C}
+
+\setbeamercolor{normal text}{fg=BMSText,bg=BMSWhite}
+\setbeamercolor{structure}{fg=BMSNavy}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+\AtBeginEnvironment{frame}{\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\relax}
+
+\newcommand{\LightFrameHeader}[3]{%
+  \node[anchor=north west,inner sep=0pt,text=BMSNavy,
+        font=\fontsize{16}{19}\selectfont\bfseries]
+    at ([xshift=0.76cm,yshift=-0.46cm]current page.north west) {#1};
+  \node[anchor=north east,inner sep=0pt,text=BMSMuted,
+        font=\fontsize{6.8}{8.5}\selectfont\bfseries]
+    at ([xshift=-1.48cm,yshift=-0.59cm]current page.north east) {#2};
+  \node[anchor=north east,inner sep=0pt,text=BMSNavy,
+        font=\fontsize{9}{11}\selectfont\bfseries]
+    at ([xshift=-0.76cm,yshift=-0.53cm]current page.north east) {#3};
+  \draw[BMSLine,line width=0.5pt]
+    ([xshift=0.76cm,yshift=-1.16cm]current page.north west) --
+    ([xshift=-0.76cm,yshift=-1.16cm]current page.north east);
+  \draw[BMSNavy,line width=1.0pt]
+    ([xshift=0.76cm,yshift=-1.16cm]current page.north west) -- ++(1.18cm,0);
+}
+
+\newcommand{\LightFrameFooter}[1]{%
+  \draw[BMSLine,line width=0.5pt]
+    ([xshift=0.76cm,yshift=0.44cm]current page.south west) --
+    ([xshift=-0.76cm,yshift=0.44cm]current page.south east);
+  \node[anchor=south west,inner sep=0pt,text=BMSMuted,
+        font=\fontsize{5.8}{7}\selectfont]
+    at ([xshift=0.76cm,yshift=0.17cm]current page.south west) {#1};
+}
+
+\newcommand{\LightTag}[2][BMSSoftBlue]{%
+  \tikz[baseline=(lighttag.base)]{%
+    \node[rounded corners=3pt,fill=#1,draw=none,minimum width=0pt,minimum height=0pt,
+          outer sep=0pt,inner xsep=3.6pt,inner ysep=1.2pt,text height=1.15ex,text depth=0.20ex,
+          text=BMSNavy,font=\fontsize{4.9}{5.8}\selectfont\bfseries] (lighttag) {#2};}%
+}
+
+\tikzset{
+  slide/prose/.style={align=left,execute at begin node={\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  light/card/.style={rounded corners=3pt,draw=BMSLine,line width=0.45pt,fill=BMSWhite},
+  light/panel/.style={rounded corners=4pt,draw=BMSLine,line width=0.45pt,fill=BMSPanel},
+  light/node/.style={rounded corners=3pt,draw=BMSLine,line width=0.55pt,fill=BMSWhite,
+    minimum height=0.74cm,inner xsep=0.17cm,inner ysep=0.12cm,align=center,
+    text=BMSText,font=\fontsize{6.4}{7.8}\selectfont},
+  light/action/.style={light/node,align=left,inner xsep=0.22cm,inner ysep=0.16cm},
+  light/decision/.style={diamond,aspect=1.55,draw=BMSNavy,line width=0.62pt,fill=BMSWhite,
+    minimum width=1.18cm,minimum height=0.76cm,inner sep=0.05cm,align=center,
+    text=BMSNavy,font=\fontsize{5.8}{6.9}\selectfont\bfseries},
+  light/terminal/.style={rounded corners=8pt,draw=BMSLine,line width=0.55pt,fill=BMSWhite,
+    minimum height=0.58cm,inner xsep=0.22cm,inner ysep=0.10cm,align=center,
+    text=BMSNavy,font=\fontsize{6.0}{7.2}\selectfont\bfseries},
+  light/artifact/.style={cylinder,shape border rotate=90,aspect=0.30,draw=BMSLine,line width=0.55pt,
+    fill=BMSWhite,minimum width=1.45cm,minimum height=0.92cm,inner xsep=0.14cm,inner ysep=0.10cm,
+    align=center,text=BMSNavy,font=\fontsize{5.8}{7.0}\selectfont\bfseries},
+  light/graph edge/.style={draw=BMSLine,line width=1.05pt,line cap=round,line join=round},
+  light/graph node/.style={circle,draw=BMSNavy,line width=0.72pt,fill=BMSWhite,
+    minimum size=0.64cm,inner sep=0pt,text=BMSNavy,font=\fontsize{8.5}{10}\selectfont\bfseries},
+  light/graph current/.style={light/graph node,draw=BMSNavy,line width=0.92pt,fill=BMSSoftOrange},
+  light/flow/.style={-{Stealth[length=1.35mm,width=1.0mm]},draw=BMSFlow,line width=0.66pt,
+    line cap=round,line join=round},
+  light/return/.style={-{Stealth[length=1.30mm,width=0.95mm]},draw=BMSReturn,line width=0.61pt,
+    line cap=round,line join=round},
+  light/optional/.style={-{Stealth[length=1.25mm,width=0.92mm]},draw=BMSOptional,line width=0.56pt,
+    dashed,dash pattern=on 3.1pt off 2.5pt,line cap=round,line join=round},
+  light/maintenance/.style={-{Stealth[length=1.25mm,width=0.92mm]},draw=BMSOptional,line width=0.54pt,
+    dash pattern=on 5pt off 2.2pt,line cap=round,line join=round},
+  light/highlight/.style={-{Stealth[length=1.35mm,width=1.0mm]},draw=BMSNavy,line width=0.76pt,
+    line cap=round,line join=round},
+  light/arrow/.style={light/flow},
+  light/edge label/.style={text=BMSMuted,font=\fontsize{5.4}{6.6}\selectfont,fill=BMSWhite,
+    rounded corners=1.5pt,inner xsep=2.4pt,inner ysep=1.1pt},
+  light/adjacent label/.style={text=BMSMuted,font=\fontsize{5.4}{6.6}\selectfont,inner sep=0pt},
+  light/label/.style={light/edge label}
+}

@@ -1,0 +1,75 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{theme.tex}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMSSoftBlue]
+      (current page.north west) rectangle ([xshift=5.0cm]current page.south west);
+    \node[anchor=north west,inner sep=0pt,text=BMSNavy,
+          font=\fontsize{23}{27}\selectfont\bfseries,text width=13.1cm]
+      at ([xshift=1.08cm,yshift=-2.05cm]current page.north west)
+      {A clear presentation title};
+    \node[anchor=north west,inner sep=0pt,text=BMSText,
+          font=\fontsize{10}{13}\selectfont,text width=8.6cm]
+      at ([xshift=1.10cm,yshift=-3.18cm]current page.north west)
+      {A concise subtitle that states the purpose of the deck};
+    \draw[BMSNavy,line width=1.1pt]
+      ([xshift=1.10cm,yshift=-4.08cm]current page.north west) -- ++(1.3cm,0);
+    \node[anchor=south west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{7.2}{9}\selectfont]
+      at ([xshift=1.10cm,yshift=0.72cm]current page.south west)
+      {Presenter · Organization · Date};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Place evidence before commentary}{CONTENT}{02}
+
+    \node[light/action,fill=BMSWhite,text width=2.45cm,minimum height=1.18cm]
+      (a) at ([xshift=2.25cm,yshift=-3.15cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{INPUT}\\[3.5pt]
+       \textcolor{BMSNavy}{\bfseries Source material}\\[1.5pt]
+       \textcolor{BMSMuted}{One short description}};
+    \node[light/action,fill=BMSWhite,text width=2.45cm,minimum height=1.18cm]
+      (b) at ([xshift=6.15cm,yshift=-3.15cm]current page.north west)
+      {\LightTag[BMSSoftGreen]{ACTION}\\[3.5pt]
+       \textcolor{BMSNavy}{\bfseries Transform}\\[1.5pt]
+       \textcolor{BMSMuted}{One short description}};
+    \node[light/action,fill=BMSWhite,text width=2.45cm,minimum height=1.18cm]
+      (c) at ([xshift=10.05cm,yshift=-3.15cm]current page.north west)
+      {\LightTag[BMSSoftOrange]{OUTPUT}\\[3.5pt]
+       \textcolor{BMSNavy}{\bfseries Reviewed result}\\[1.5pt]
+       \textcolor{BMSMuted}{One short description}};
+    \draw[light/flow] (a.east) -- (b.west);
+    \draw[light/flow] (b.east) --
+      node[light/edge label,fill=BMSWhite,midway] {accepted} (c.west);
+    \coordinate (revisionlane) at ([yshift=-0.62cm]c.south);
+    \draw[light/optional] (c.south) -- (revisionlane) -| (b.south);
+    \node[light/adjacent label,anchor=south]
+      at ([xshift=-1.82cm,yshift=0.08cm]revisionlane) {optional revision};
+
+    \fill[BMSPanel,rounded corners=2.4pt]
+      ([xshift=11.88cm,yshift=-1.52cm]current page.north west) rectangle
+      ([xshift=15.24cm,yshift=-7.80cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=2.78cm]
+      at ([xshift=12.18cm,yshift=-1.90cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.2}{10}\selectfont\bfseries Interpretation\par
+       \vspace{0.18cm}
+       \color{BMSText}\mdseries\fontsize{6.8}{8.7}\selectfont
+       Explain why the relationship matters. Keep this region short enough to preserve the visual hierarchy.\par};
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=9.65cm]
+      at ([xshift=1.00cm,yshift=-5.15cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.4}{10.2}\selectfont\bfseries Supporting statement\par
+       \vspace{0.16cm}
+       \color{BMSText}\mdseries\fontsize{7.0}{9.0}\selectfont
+       Use complete, concise language. Keep text, separators, and container boundaries visibly separated.\par};
+
+    \LightFrameFooter{Restrained light style · reusable 16:9 starter}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

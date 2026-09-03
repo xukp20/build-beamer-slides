@@ -1,0 +1,403 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/warm-editorial/theme.tex}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \fill[BMETerracotta]
+      ([xshift=0.92cm,yshift=-1.24cm]current page.north west) rectangle ++(0.14cm,-0.86cm);
+    \node[anchor=north west,inner sep=0pt,text=BMETerracotta,
+          font=\sffamily\fontsize{6.5}{8}\selectfont\bfseries]
+      at ([xshift=1.28cm,yshift=-1.27cm]current page.north west)
+      {WORKED EXAMPLE · MATHEMATICAL EXPOSITION};
+    \node[anchor=north west,inner sep=0pt,text=BMEBrown,
+          font=\rmfamily\fontsize{25}{29}\selectfont\bfseries,text width=13.1cm]
+      at ([xshift=1.22cm,yshift=-2.62cm]current page.north west)
+      {Random walks on graphs};
+    \node[anchor=north west,inner sep=0pt,text=BMEMuted,
+          font=\sffamily\fontsize{9.8}{12.5}\selectfont,text width=10.2cm]
+      at ([xshift=1.25cm,yshift=-3.80cm]current page.north west)
+      {From local movement to graph structure and long-run behavior};
+    \draw[BMEStone,line width=0.55pt]
+      ([xshift=1.25cm,yshift=-4.72cm]current page.north west) -- ++(6.4cm,0);
+    \node[anchor=south west,inner sep=0pt,text=BMEMuted,
+          font=\sffamily\fontsize{6.9}{8.6}\selectfont]
+      at ([xshift=1.25cm,yshift=0.72cm]current page.south west)
+      {Warm Editorial style · seven-slide example};
+    \fill[BMESage]
+      ([xshift=-1.12cm,yshift=0.82cm]current page.south east) circle[radius=2.1pt];
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{Edges become transition probabilities}{FOUNDATION}{02}
+
+    \coordinate (A) at ([xshift=2.05cm,yshift=-3.05cm]current page.north west);
+    \coordinate (B) at ([xshift=4.75cm,yshift=-2.18cm]current page.north west);
+    \coordinate (C) at ([xshift=7.55cm,yshift=-3.30cm]current page.north west);
+    \coordinate (D) at ([xshift=5.32cm,yshift=-5.42cm]current page.north west);
+    \coordinate (E) at ([xshift=2.18cm,yshift=-5.18cm]current page.north west);
+    \draw[warm/graph edge] (A)--(B)--(C)--(D)--(E)--(A);
+    \draw[warm/graph edge] (A)--(D);
+    \draw[warm/graph edge] (B)--(D);
+    \node[warm/graph node] (nodeA) at (A) {a};
+    \node[warm/graph current] (nodeB) at (B) {b};
+    \node[warm/graph node] (nodeC) at (C) {c};
+    \node[warm/graph node] (nodeD) at (D) {d};
+    \node[warm/graph node] (nodeE) at (E) {e};
+    \node[anchor=south,inner sep=0pt]
+      at ([yshift=0.16cm]nodeB.north) {\WarmTag[BMESand]{CURRENT}};
+    \draw[warm/highlight] (nodeB.south east) to[out=-58,in=72] (nodeD.north east);
+    \node[warm/adjacent label,anchor=west,text=BMETerracotta,font=\sffamily\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=0.75cm,yshift=-1.25cm]nodeB.east) {possible step};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=8.55cm,yshift=-1.62cm]current page.north west) --
+      ([xshift=8.55cm,yshift=-7.55cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=5.78cm]
+      at ([xshift=9.05cm,yshift=-1.82cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries DEFINITION\par
+       \vspace{0.14cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.4}{12.4}\selectfont\bfseries
+       Choose a neighboring vertex in proportion to edge weight.\par
+       \vspace{0.26cm}
+       \WarmBodyText
+       For weighted adjacency matrix $W$, the transition probability is\par
+       \vspace{0.22cm}
+       \WarmDisplayMath
+       \[
+         P_{ij}=\frac{W_{ij}}{\sum_k W_{ik}}.
+       \]
+       \vspace{0.08cm}
+       \WarmBodyText
+       Every row of $P$ sums to one. The graph specifies the available transitions.\par};
+
+    \WarmFrameFooter{Random walks · local rule}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{One step is matrix multiplication}{DYNAMICS}{03}
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.55cm]
+      at ([xshift=0.98cm,yshift=-1.78cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries TRANSITION MATRIX\par
+       \vspace{0.22cm}
+       \color{BMEBrown}\rmfamily\fontsize{11.0}{13.4}\selectfont
+       \[
+       P=\begin{pmatrix}
+       0 & \tfrac13 & 0 & \tfrac13 & \tfrac13\\
+       \tfrac13 & 0 & \tfrac13 & \tfrac13 & 0\\
+       0 & \tfrac12 & 0 & \tfrac12 & 0\\
+       \tfrac14 & \tfrac14 & \tfrac14 & 0 & \tfrac14\\
+       \tfrac12 & 0 & 0 & \tfrac12 & 0
+       \end{pmatrix}.
+       \]
+       \vspace{0.18cm}
+       \WarmBodyText
+       At each vertex, choose one neighbor uniformly.\par};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=8.28cm,yshift=-1.62cm]current page.north west) --
+      ([xshift=8.28cm,yshift=-7.55cm]current page.north west);
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.18cm]
+      at ([xshift=8.80cm,yshift=-1.78cm]current page.north west)
+      {\color{BMESage}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries DISTRIBUTION UPDATE\par
+       \vspace{0.20cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.2}{12.4}\selectfont\bfseries
+       If $\mu_t$ records the position distribution at time $t$, then\par
+       \vspace{0.18cm}
+       \WarmDisplayMath
+       \[
+         \mu_{t+1}=\mu_tP.
+       \]
+       \vspace{0.18cm}
+       \WarmBodyText
+       The initial row vector is concentrated at vertex $b$.\par
+       \vspace{0.18cm}
+       After one step, each of $a$, $c$, and $d$ has probability $1/3$.\par};
+
+    \WarmFrameFooter{Random walks · linear evolution}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{A bottleneck delays movement between two regions}{STRUCTURE}{04}
+
+    \fill[BMEWhite,rounded corners=5pt]
+      ([xshift=0.88cm,yshift=-1.60cm]current page.north west) rectangle
+      ([xshift=5.12cm,yshift=-6.88cm]current page.north west);
+    \fill[BMEWhite,rounded corners=5pt]
+      ([xshift=5.60cm,yshift=-1.60cm]current page.north west) rectangle
+      ([xshift=9.92cm,yshift=-6.88cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BMETerracotta,
+          font=\sffamily\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=1.10cm,yshift=-1.82cm]current page.north west) {REGION A};
+    \node[anchor=north west,inner sep=0pt,text=BMESage,
+          font=\sffamily\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=5.82cm,yshift=-1.82cm]current page.north west) {REGION B};
+
+    \coordinate (GA) at ([xshift=1.70cm,yshift=-3.02cm]current page.north west);
+    \coordinate (GB) at ([xshift=3.38cm,yshift=-2.58cm]current page.north west);
+    \coordinate (GC) at ([xshift=2.12cm,yshift=-4.70cm]current page.north west);
+    \coordinate (GD) at ([xshift=4.28cm,yshift=-4.10cm]current page.north west);
+    \coordinate (GE) at ([xshift=6.48cm,yshift=-4.10cm]current page.north west);
+    \coordinate (GF) at ([xshift=7.22cm,yshift=-2.62cm]current page.north west);
+    \coordinate (GG) at ([xshift=9.08cm,yshift=-3.12cm]current page.north west);
+    \coordinate (GH) at ([xshift=8.34cm,yshift=-5.02cm]current page.north west);
+
+    \draw[warm/graph edge] (GA)--(GB)--(GD)--(GC)--(GA);
+    \draw[warm/graph edge] (GB)--(GC);
+    \draw[warm/graph edge] (GE)--(GF)--(GG)--(GH)--(GE);
+    \draw[warm/graph edge] (GE)--(GG);
+    \draw[warm/graph edge] (GF)--(GH);
+    \draw[BMEOptional,line width=0.82pt,dashed,dash pattern=on 3pt off 2.3pt,
+          line cap=round] (GD)--(GE);
+
+    \node[warm/graph current] (graph-a) at (GA) {a};
+    \node[warm/graph node] (graph-b) at (GB) {b};
+    \node[warm/graph node] (graph-c) at (GC) {c};
+    \node[warm/graph node] (graph-d) at (GD) {d};
+    \node[warm/graph node] (graph-e) at (GE) {e};
+    \node[warm/graph node] (graph-f) at (GF) {f};
+    \node[warm/graph current,draw=BMESage,fill=BMEIvory] (graph-g) at (GG) {g};
+    \node[warm/graph node] (graph-h) at (GH) {h};
+
+    \draw[warm/graph route] (graph-a.center)--(graph-c.center);
+    \draw[warm/graph route] (graph-c.center)--(graph-d.center);
+    \draw[warm/graph route arrow] (graph-d.center)--(graph-e.center);
+    \draw[warm/graph route] (graph-e.center)--(graph-h.center);
+    \draw[warm/graph route] (graph-h.center)--(graph-g.center);
+
+    \node[anchor=south,inner sep=0pt]
+      at ([yshift=0.15cm]graph-a.north) {\WarmTag[BMESand]{CURRENT}};
+    \node[anchor=south,inner sep=0pt]
+      at ([yshift=0.15cm]graph-g.north) {\WarmTag[BMEIvory]{TARGET}};
+    \node[warm/adjacent label,anchor=south,text=BMEMuted]
+      at ([yshift=0.13cm]$(graph-d)!0.5!(graph-e)$) {bridge weight $0.1$};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=10.35cm,yshift=-1.62cm]current page.north west) --
+      ([xshift=10.35cm,yshift=-7.55cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=4.22cm]
+      at ([xshift=10.80cm,yshift=-1.82cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries CUT BOTTLENECK\par
+       \vspace{0.15cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.2}{12.2}\selectfont\bfseries
+       A single weak edge connects the two regions.\par
+       \vspace{0.24cm}
+       \WarmDisplayMath
+       \[
+         \Phi(S)=\frac{w(S,\bar S)}{\operatorname{vol}(S)}.
+       \]
+       \vspace{0.08cm}
+       \WarmBodyText
+       Small conductance means that probability leaves a region slowly.\par
+       \vspace{0.19cm}
+       Crossing remains possible but rare.\par};
+
+    \WarmFrameFooter{Random walks · graph structure and conductance}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{Walk variants produce different convergence profiles}{COMPARISON}{05}
+
+    \fill[BMEWhite,rounded corners=5pt]
+      ([xshift=0.88cm,yshift=-1.60cm]current page.north west) rectangle
+      ([xshift=10.95cm,yshift=-7.18cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BMETerracotta,
+          font=\sffamily\fontsize{5.9}{7.1}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-1.84cm]current page.north west)
+      {TOTAL VARIATION DISTANCE};
+
+    \fill[BMESand,opacity=0.38]
+      ([xshift=1.48cm,yshift=-5.60cm]current page.north west) rectangle
+      ([xshift=9.80cm,yshift=-6.30cm]current page.north west);
+    \draw[BMEStone,line width=0.65pt]
+      ([xshift=1.48cm,yshift=-6.30cm]current page.north west) --
+      ([xshift=9.82cm,yshift=-6.30cm]current page.north west);
+    \draw[BMEStone,line width=0.65pt]
+      ([xshift=1.48cm,yshift=-6.30cm]current page.north west) --
+      ([xshift=1.48cm,yshift=-2.30cm]current page.north west);
+    \foreach \x/\label in {1.48/0,3.12/2,4.76/4,6.40/6,8.04/8,9.68/10}{
+      \draw[BMEStone,line width=0.4pt]
+        ([xshift=\x cm,yshift=-6.24cm]current page.north west) -- ++(0,-0.11cm);
+      \node[anchor=north,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.2}{6.3}\selectfont]
+        at ([xshift=\x cm,yshift=-6.46cm]current page.north west) {\label};
+    }
+    \foreach \y/\label in {-6.30/0,-5.34/.25,-4.38/.50,-3.42/.75,-2.46/1.0}{
+      \draw[BMEStone,line width=0.4pt]
+        ([xshift=1.42cm,yshift=\y cm]current page.north west) -- ++(-0.11cm,0);
+      \node[anchor=east,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.2}{6.3}\selectfont]
+        at ([xshift=1.24cm,yshift=\y cm]current page.north west) {\label};
+    }
+    \draw[BMEOptional,line width=0.52pt,dashed]
+      ([xshift=1.48cm,yshift=-5.60cm]current page.north west) --
+      ([xshift=9.80cm,yshift=-5.60cm]current page.north west);
+    \node[anchor=south west,inner sep=0pt,text=BMEMuted,
+          font=\sffamily\fontsize{5.2}{6.3}\selectfont]
+      at ([xshift=1.64cm,yshift=-5.52cm]current page.north west) {$0.15$ threshold};
+
+    \draw[BMETerracotta,line width=1.25pt,line cap=round]
+      ([xshift=1.48cm,yshift=-2.55cm]current page.north west)
+      .. controls ([xshift=2.45cm,yshift=-3.86cm]current page.north west) and
+                  ([xshift=5.30cm,yshift=-5.20cm]current page.north west) ..
+      ([xshift=9.20cm,yshift=-5.78cm]current page.north west);
+    \draw[BMESage,line width=1.25pt,line cap=round]
+      ([xshift=1.48cm,yshift=-2.55cm]current page.north west)
+      .. controls ([xshift=3.10cm,yshift=-3.08cm]current page.north west) and
+                  ([xshift=6.25cm,yshift=-4.18cm]current page.north west) ..
+      ([xshift=9.20cm,yshift=-4.96cm]current page.north west);
+    \draw[BMEBrown,line width=1.05pt,dashed,dash pattern=on 4pt off 2.2pt,line cap=round]
+      ([xshift=1.48cm,yshift=-2.55cm]current page.north west)
+      .. controls ([xshift=2.22cm,yshift=-4.22cm]current page.north west) and
+                  ([xshift=4.75cm,yshift=-5.28cm]current page.north west) ..
+      ([xshift=9.20cm,yshift=-5.42cm]current page.north west);
+    \node[anchor=west,inner sep=0pt,text=BMETerracotta,font=\sffamily\fontsize{5.6}{6.8}\selectfont\bfseries]
+      at ([xshift=9.38cm,yshift=-5.78cm]current page.north west) {simple};
+    \node[anchor=west,inner sep=0pt,text=BMEBrown,font=\sffamily\fontsize{5.6}{6.8}\selectfont\bfseries]
+      at ([xshift=9.38cm,yshift=-5.42cm]current page.north west) {restart};
+    \node[anchor=west,inner sep=0pt,text=BMESage,font=\sffamily\fontsize{5.6}{6.8}\selectfont\bfseries]
+      at ([xshift=9.38cm,yshift=-4.96cm]current page.north west) {lazy};
+    \node[anchor=north,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.7}{6.9}\selectfont]
+      at ([xshift=5.68cm,yshift=-6.82cm]current page.north west) {time step $t$};
+
+    \node[warm/panel,slide/prose,anchor=north west,inner sep=0.25cm,text width=3.50cm,minimum height=4.84cm]
+      at ([xshift=11.34cm,yshift=-1.64cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.0}{7.2}\selectfont\bfseries ILLUSTRATIVE READOUT\par
+       \vspace{0.20cm}
+       \color{BMEBrown}\rmfamily\fontsize{9.5}{11.4}\selectfont\bfseries
+       Fast early decline can end at a biased floor.\par
+       \vspace{0.25cm}
+       \WarmBodySmall
+       \textbf{Simple walk}\par threshold near $t=8$\par
+       \vspace{0.18cm}
+       \textbf{Restart walk}\par reaches a biased floor\par
+       \vspace{0.18cm}
+       \textbf{Lazy walk}\par slower, same target\par
+       \vspace{0.24cm}
+       Values are schematic only.\par};
+
+    \WarmFrameFooter{Schematic profiles · direct labels and threshold band}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{This walk converges to one stationary distribution}{LONG-RUN BEHAVIOR}{06}
+
+    \node[anchor=north west,inner sep=0pt,text=BMETerracotta,
+          font=\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries]
+      at ([xshift=0.98cm,yshift=-1.66cm]current page.north west) {DISTANCE TO STATIONARITY};
+    \draw[BMEStone,line width=0.65pt]
+      ([xshift=1.42cm,yshift=-6.32cm]current page.north west) --
+      ([xshift=8.20cm,yshift=-6.32cm]current page.north west);
+    \draw[BMEStone,line width=0.65pt]
+      ([xshift=1.42cm,yshift=-6.32cm]current page.north west) --
+      ([xshift=1.42cm,yshift=-2.08cm]current page.north west);
+    \foreach \x/\label in {1.42/0,2.77/2,4.12/4,5.47/6,6.82/8,8.17/10}{
+      \draw[BMEStone,line width=0.4pt]
+        ([xshift=\x cm,yshift=-6.26cm]current page.north west) -- ++(0,-0.11cm);
+      \node[anchor=north,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.4}{6.6}\selectfont]
+        at ([xshift=\x cm,yshift=-6.48cm]current page.north west) {\label};
+    }
+    \foreach \y/\label in {-5.48/.2,-4.63/.4,-3.78/.6,-2.93/.8}{
+      \draw[BMEStone,line width=0.4pt]
+        ([xshift=1.36cm,yshift=\y cm]current page.north west) -- ++(-0.11cm,0);
+      \node[anchor=east,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.4}{6.6}\selectfont]
+        at ([xshift=1.17cm,yshift=\y cm]current page.north west) {\label};
+    }
+    \draw[BMETerracotta,line width=1.35pt]
+      ([xshift=1.42cm,yshift=-2.55cm]current page.north west)
+      .. controls ([xshift=2.25cm,yshift=-4.15cm]current page.north west) and
+                  ([xshift=4.20cm,yshift=-5.42cm]current page.north west) ..
+      ([xshift=8.15cm,yshift=-6.05cm]current page.north west);
+    \node[anchor=north,inner sep=0pt,text=BMEMuted,font=\sffamily\fontsize{5.8}{7}\selectfont]
+      at ([xshift=4.82cm,yshift=-6.82cm]current page.north west) {time step $t$};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=8.80cm,yshift=-1.62cm]current page.north west) --
+      ([xshift=8.80cm,yshift=-7.55cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=5.55cm]
+      at ([xshift=9.28cm,yshift=-1.80cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries STATIONARY DISTRIBUTION\par
+       \vspace{0.18cm}
+       \WarmDisplayMath
+       \[
+         \pi P=\pi.
+       \]
+       \vspace{0.12cm}
+       \WarmBodyText
+       On a finite, connected, non-bipartite graph, the walk has a unique limit.\par
+       \vspace{0.25cm}
+       \color{BMEBrown}\rmfamily\itshape\fontsize{8.8}{10.8}\selectfont
+       Vertices of higher degree receive more long-run probability.\par};
+
+    \WarmFrameFooter{Schematic curve · conceptual illustration}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{Applications, assumptions, and reporting choices}{INTERPRETATION}{07}
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=4.00cm]
+      at ([xshift=0.98cm,yshift=-1.82cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries USEFUL FOR\par
+       \vspace{0.18cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.0}{12.0}\selectfont\bfseries
+       Local diffusion\par
+       \vspace{0.20cm}
+       \WarmBodyText
+       Ranking, sampling, load spreading, and simple models of movement through a network.\par};
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=4.00cm]
+      at ([xshift=5.78cm,yshift=-1.82cm]current page.north west)
+      {\color{BMESage}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries REQUIRES CARE\par
+       \vspace{0.18cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.0}{12.0}\selectfont\bfseries
+       Structure matters\par
+       \vspace{0.20cm}
+       \WarmBodyText
+       Direction, weights, disconnected regions, and periodicity change both movement and convergence.\par};
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=4.10cm]
+      at ([xshift=10.62cm,yshift=-1.82cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries REPORT EXPLICITLY\par
+       \vspace{0.18cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.0}{12.0}\selectfont\bfseries
+       Transition rule and stopping rule\par
+       \vspace{0.20cm}
+       \WarmBodyText
+       State whether the chain is weighted, lazy, restarted, or observed for a fixed number of steps.\par};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=0.98cm,yshift=-5.23cm]current page.north west) --
+      ([xshift=-0.98cm,yshift=-5.23cm]current page.north east);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=13.55cm]
+      at ([xshift=1.02cm,yshift=-5.64cm]current page.north west)
+      {\color{BMEBrown}\rmfamily\fontsize{11.0}{13.4}\selectfont\bfseries
+       Transition rules are simple, but graph structure determines the result.\par
+       \vspace{0.17cm}
+       \WarmBodyText
+       State the rule, its consequence, and the assumptions used to interpret the result.\par};
+
+    \WarmFrameFooter{Random walks · modeling boundary}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

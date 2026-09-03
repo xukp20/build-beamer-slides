@@ -1,0 +1,368 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/light/theme.tex}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMSSoftBlue]
+      (current page.north west) rectangle ([xshift=4.85cm]current page.south west);
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{7}{8.5}\selectfont\bfseries]
+      at ([xshift=1.02cm,yshift=-1.02cm]current page.north west)
+      {WORKED EXAMPLE · SYSTEM DESIGN};
+    \node[anchor=north west,inner sep=0pt,text=BMSNavy,
+          font=\fontsize{23}{27}\selectfont\bfseries,text width=13.0cm]
+      at ([xshift=1.02cm,yshift=-2.15cm]current page.north west)
+      {Research system architecture};
+    \node[anchor=north west,inner sep=0pt,text=BMSText,
+          font=\fontsize{10}{12.8}\selectfont,text width=10.8cm]
+      at ([xshift=1.04cm,yshift=-3.28cm]current page.north west)
+      {A six-slide example of overview, branching, feedback, and recovery};
+    \draw[BMSNavy,line width=1.05pt]
+      ([xshift=1.04cm,yshift=-4.15cm]current page.north west) -- ++(1.35cm,0);
+    \node[anchor=south west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.8}{8.5}\selectfont]
+      at ([xshift=1.04cm,yshift=0.72cm]current page.south west)
+      {Illustrative architecture · September 2026};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Coordination produces verified output}{OVERVIEW}{02}
+
+    \fill[BMSPanel,rounded corners=4pt]
+      ([xshift=0.78cm,yshift=-1.47cm]current page.north west) rectangle
+      ([xshift=12.08cm,yshift=-7.82cm]current page.north west);
+
+    \node[light/action,fill=BMSWhite,text width=1.60cm,minimum height=1.24cm] (goal)
+      at ([xshift=2.10cm,yshift=-3.05cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{INPUT}\\[3.2pt]
+       \textcolor{BMSNavy}{\bfseries Request}\\[1.5pt]
+       \textcolor{BMSMuted}{scope + inputs}};
+    \node[light/action,fill=BMSWhite,text width=1.60cm,minimum height=1.24cm] (plan)
+      at ([xshift=4.92cm,yshift=-3.05cm]current page.north west)
+      {\LightTag[BMSSoftGreen]{CONTROL}\\[3.2pt]
+       \textcolor{BMSNavy}{\bfseries Coordinator}\\[1.5pt]
+       \textcolor{BMSMuted}{plan + dispatch}};
+    \node[light/action,fill=BMSWhite,text width=1.60cm,minimum height=1.24cm] (work)
+      at ([xshift=7.74cm,yshift=-3.05cm]current page.north west)
+       {\LightTag[BMSSoftOrange]{WORK}\\[3.2pt]
+       \textcolor{BMSNavy}{\bfseries Specialists}\\[1.5pt]
+       \textcolor{BMSMuted}{run + report}};
+    \node[light/action,fill=BMSWhite,text width=1.60cm,minimum height=1.24cm] (release)
+      at ([xshift=10.56cm,yshift=-3.05cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{OUTPUT}\\[3.2pt]
+       \textcolor{BMSNavy}{\bfseries Release}\\[1.5pt]
+       \textcolor{BMSMuted}{artifact + record}};
+    \draw[light/flow] (goal.east) -- (plan.west);
+    \draw[light/flow] (plan.east) -- (work.west);
+    \draw[light/flow] (work.east) -- (release.west);
+
+    \node[light/action,fill=BMSWhite,text width=2.48cm,minimum height=1.42cm] (evidence)
+      at ([xshift=6.46cm,yshift=-5.43cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{ARTIFACT}\\[3.2pt]
+       \textcolor{BMSNavy}{\bfseries Evidence store}\\[1.5pt]
+       \textcolor{BMSMuted}{sources + results\\[0.6pt]checkpoint history}};
+    \coordinate (reportturn) at ([yshift=-0.48cm]work.south);
+    \coordinate (reportlane) at (reportturn -| evidence.north);
+    \draw[light/return] (work.south) -- (reportturn) --
+      node[light/edge label,fill=BMSPanel,midway] {report} (reportlane) -- (evidence.north);
+    \coordinate (feedbackA) at ([xshift=-1.12cm]evidence.west);
+    \coordinate (feedbackC) at ([yshift=-0.38cm]plan.south);
+    \coordinate (feedbackB) at (feedbackA |- feedbackC);
+    \draw[light/return] (evidence.west) -- (feedbackA) -- (feedbackB) -- (feedbackC) -- (plan.south);
+    \node[light/adjacent label,anchor=east]
+      at ([xshift=-0.18cm,yshift=-0.86cm]feedbackB) {review evidence};
+
+    \fill[BMSSoftBlue,rounded corners=4pt]
+      ([xshift=12.36cm,yshift=-1.47cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=2.32cm]
+      at ([xshift=12.62cm,yshift=-1.83cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.1}{9.8}\selectfont\bfseries Reading guide\par
+       \vspace{0.20cm}
+       \color{BMSText}\mdseries\fontsize{6.5}{8.3}\selectfont
+       The main path moves left to right.\par
+       \vspace{0.20cm}
+       Evidence returns through a separate lower corridor.\par
+       \vspace{0.20cm}
+       Color encodes role.\par};
+
+    \LightFrameFooter{Research system architecture · illustrative example}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Tasks can branch and return to review}{DETAIL}{03}
+
+    \fill[BMSSoftBlue,rounded corners=5pt]
+      ([xshift=0.76cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=12.12cm,yshift=-3.18cm]current page.north west);
+    \fill[BMSSoftGreen,rounded corners=5pt]
+      ([xshift=0.76cm,yshift=-3.42cm]current page.north west) rectangle
+      ([xshift=12.12cm,yshift=-7.78cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{5.7}{6.8}\selectfont\bfseries]
+      at ([xshift=0.98cm,yshift=-1.66cm]current page.north west) {CONTROL};
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{5.7}{6.8}\selectfont\bfseries]
+      at ([xshift=0.98cm,yshift=-3.60cm]current page.north west) {EXECUTION AND EVIDENCE};
+
+    \node[light/terminal] (detail-request)
+      at ([xshift=1.80cm,yshift=-2.42cm]current page.north west) {Request};
+    \node[light/action,text width=1.58cm,minimum height=1.04cm] (detail-coord)
+      at ([xshift=4.15cm,yshift=-2.42cm]current page.north west)
+      {\LightTag[BMSSoftGreen]{CONTROL}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Coordinator}\\[1.2pt]
+       \textcolor{BMSMuted}{dispatch}};
+    \node[light/decision] (detail-gate)
+      at ([xshift=8.26cm,yshift=-2.42cm]current page.north west) {Review\\pass?};
+    \node[light/terminal,fill=BMSSoftOrange] (detail-release)
+      at ([xshift=10.72cm,yshift=-2.42cm]current page.north west) {Publish};
+
+    \node[light/action,text width=1.60cm,minimum height=1.12cm] (detail-source)
+      at ([xshift=2.02cm,yshift=-4.62cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{AGENT}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Source}\\[1.2pt]
+       \textcolor{BMSMuted}{collect + audit}};
+    \node[light/action,text width=1.60cm,minimum height=1.12cm] (detail-analysis)
+      at ([xshift=5.14cm,yshift=-4.62cm]current page.north west)
+      {\LightTag[BMSSoftOrange]{AGENT}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Analysis}\\[1.2pt]
+       \textcolor{BMSMuted}{model + test}};
+    \node[light/action,text width=1.60cm,minimum height=1.12cm] (detail-review)
+      at ([xshift=8.26cm,yshift=-4.62cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{AGENT}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Review}\\[1.2pt]
+       \textcolor{BMSMuted}{verify + explain}};
+
+    \node[light/action,dashed,draw=BMSOptional,text width=1.58cm,minimum height=0.92cm]
+      (detail-external) at ([xshift=2.02cm,yshift=-6.53cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{OPTIONAL}\\[2.6pt]
+       \textcolor{BMSNavy}{\bfseries Corpus import}};
+    \node[light/artifact,text width=1.12cm] (detail-evidence)
+      at ([xshift=5.14cm,yshift=-6.35cm]current page.north west) {Evidence\\store};
+    \node[light/terminal,fill=BMSSoftOrange] (detail-checkpoint)
+      at ([xshift=8.26cm,yshift=-6.35cm]current page.north west) {Checkpoint};
+
+    \draw[light/flow] (detail-request.east) -- (detail-coord.west);
+    \draw[light/flow] (detail-coord.east) -- (detail-gate.west);
+    \draw[light/flow] (detail-gate.east) --
+      node[light/edge label,fill=BMSSoftBlue,midway] {accept} (detail-release.west);
+
+    \coordinate (dispatch) at ([yshift=-0.76cm]detail-coord.south);
+    \draw[light/flow] (detail-coord.south) -- (dispatch) -| (detail-source.north);
+    \draw[light/flow] (detail-source.east) -- (detail-analysis.west);
+    \draw[light/flow] (detail-analysis.east) -- (detail-review.west);
+    \draw[light/optional] (detail-external.north) -- (detail-source.south);
+
+    \draw[light/return] (detail-analysis.south) -- (detail-evidence.north);
+    \draw[light/return] (detail-evidence.east) -- (detail-checkpoint.west);
+    \draw[light/return] (detail-review.south) -- (detail-checkpoint.north);
+    \draw[light/return] (detail-review.north) -- (detail-gate.south);
+
+    \coordinate (gateRevisePort) at ($(detail-gate.south)!0.50!(detail-gate.west)$);
+    \coordinate (reviseDrop) at ([yshift=-0.46cm]gateRevisePort);
+    \coordinate (reviseTurn) at (detail-analysis.north |- reviseDrop);
+    \draw[light/optional] (gateRevisePort) -- (reviseDrop) -- (reviseTurn) -- (detail-analysis.north);
+    \node[light/adjacent label,anchor=south]
+      at ([yshift=0.10cm]$(reviseDrop)!0.5!(reviseTurn)$) {revise and repeat};
+
+    \fill[BMSPanel,rounded corners=4pt]
+      ([xshift=12.38cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=15.24cm,yshift=-7.78cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=2.28cm]
+      at ([xshift=12.65cm,yshift=-1.82cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.0}{9.6}\selectfont\bfseries Path guide\par
+       \vspace{0.22cm}
+       \color{BMSText}\mdseries\fontsize{6.5}{8.3}\selectfont
+       Control ends after review approval.\par
+       \vspace{0.23cm}
+       Agents run apart from stored artifacts.\par
+       \vspace{0.28cm}
+       \tikz{\draw[light/flow] (0,0)--(0.55,0);}\hspace{0.10cm}primary\par
+       \vspace{0.13cm}
+       \tikz{\draw[light/return] (0,0)--(0.55,0);}\hspace{0.10cm}evidence\par
+       \vspace{0.13cm}
+       \tikz{\draw[light/optional] (0,0)--(0.55,0);}\hspace{0.10cm}optional / retry\par};
+
+    \LightFrameFooter{Research system architecture · multi-path task detail}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Control owns state; workers return evidence}{LAYERS}{04}
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.3}{7.8}\selectfont\bfseries]
+      at ([xshift=0.88cm,yshift=-1.55cm]current page.north west) {USER AND EXTERNAL SYSTEMS};
+    \fill[BMSSoftBlue,rounded corners=2pt]
+      ([xshift=0.86cm,yshift=-1.83cm]current page.north west) rectangle
+      ([xshift=10.78cm,yshift=-2.63cm]current page.north west);
+    \node[anchor=west,inner sep=0pt,text=BMSNavy,font=\fontsize{7.1}{8.6}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-2.23cm]current page.north west) {Interface};
+    \node[anchor=east,inner sep=0pt,text=BMSMuted,font=\fontsize{6.4}{8}\selectfont]
+      at ([xshift=10.48cm,yshift=-2.23cm]current page.north west)
+      {submit request · inspect progress · approve release};
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.3}{7.8}\selectfont\bfseries]
+      at ([xshift=0.88cm,yshift=-2.92cm]current page.north west) {CONTROL PLANE};
+    \fill[BMSSoftGreen,rounded corners=2pt]
+      ([xshift=0.86cm,yshift=-3.20cm]current page.north west) rectangle
+      ([xshift=10.78cm,yshift=-4.22cm]current page.north west);
+    \node[anchor=west,inner sep=0pt,text=BMSNavy,font=\fontsize{7.1}{8.6}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-3.71cm]current page.north west) {Coordinator};
+    \node[anchor=east,inner sep=0pt,text=BMSMuted,font=\fontsize{6.4}{8}\selectfont]
+      at ([xshift=10.48cm,yshift=-3.71cm]current page.north west)
+      {state · policy · scheduling · verification gate};
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.3}{7.8}\selectfont\bfseries]
+      at ([xshift=0.88cm,yshift=-4.52cm]current page.north west) {EXECUTION PLANE};
+    \foreach \x/\title/\desc/\fillcolor in {
+      1.00/Source agent/collect + audit/BMSSoftOrange,
+      4.26/Analysis agent/model + test/BMSSoftBlue,
+      7.52/Review agent/check + explain/BMSSoftOrange}{
+      \node[light/action,fill=BMSWhite,text width=2.48cm,minimum height=1.24cm]
+        at ([xshift=\x cm+1.25cm,yshift=-5.40cm]current page.north west)
+        {\LightTag[\fillcolor]{AGENT}\\[3.2pt]
+         \textcolor{BMSNavy}{\bfseries \title}\\[1.7pt]\textcolor{BMSMuted}{\desc}};
+    }
+
+    \fill[BMSPanel,rounded corners=2.4pt]
+      ([xshift=11.10cm,yshift=-1.47cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=3.50cm]
+      at ([xshift=11.42cm,yshift=-1.84cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.1}{9.8}\selectfont\bfseries Ownership boundary\par
+       \vspace{0.20cm}
+       \color{BMSText}\mdseries\fontsize{6.6}{8.4}\selectfont
+       Control owns task policy.\par
+       \vspace{0.22cm}
+       Workers own bounded execution and return evidence.\par
+       \vspace{0.22cm}
+       Durable artifacts allow inspection without reopening a running worker.\par};
+
+    \draw[light/arrow] ([xshift=5.82cm,yshift=-2.63cm]current page.north west) --
+      ([xshift=5.82cm,yshift=-3.20cm]current page.north west);
+    \draw[light/arrow] ([xshift=5.82cm,yshift=-4.22cm]current page.north west) --
+      ([xshift=5.82cm,yshift=-4.76cm]current page.north west);
+
+    \LightFrameFooter{Research system architecture · responsibility layers}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Resume only after checkpoint validation}{RECOVERY}{05}
+
+    \node[light/action,fill=BMSWhite,text width=1.75cm,minimum height=1.05cm] (queued)
+      at ([xshift=1.85cm,yshift=-3.08cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{WAIT}\\[3pt]\textcolor{BMSNavy}{\bfseries Queued}};
+    \node[light/action,fill=BMSWhite,text width=1.75cm,minimum height=1.05cm] (running)
+      at ([xshift=4.65cm,yshift=-3.08cm]current page.north west)
+      {\LightTag[BMSSoftGreen]{ACTIVE}\\[3pt]\textcolor{BMSNavy}{\bfseries Running}};
+    \node[light/action,fill=BMSWhite,text width=1.75cm,minimum height=1.05cm] (checking)
+      at ([xshift=7.45cm,yshift=-3.08cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{GATE}\\[3pt]\textcolor{BMSNavy}{\bfseries Checking}};
+    \node[light/action,fill=BMSWhite,text width=1.75cm,minimum height=1.05cm] (done)
+      at ([xshift=10.25cm,yshift=-3.08cm]current page.north west)
+      {\LightTag[BMSSoftOrange]{END}\\[3pt]\textcolor{BMSNavy}{\bfseries Released}};
+    \draw[light/flow] (queued.east) -- (running.west);
+    \draw[light/flow] (running.east) -- (checking.west);
+    \draw[light/flow] (checking.east) -- (done.west);
+
+    \node[light/action,fill=BMSWhite,text width=2.10cm,minimum height=1.16cm] (paused)
+      at ([xshift=4.65cm,yshift=-5.32cm]current page.north west)
+      {\LightTag[BMSSoftOrange]{CHECKPOINT}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Paused}\\[1.5pt]\textcolor{BMSMuted}{state saved}};
+    \node[light/action,fill=BMSWhite,text width=2.10cm,minimum height=1.16cm] (resume)
+      at ([xshift=8.02cm,yshift=-5.32cm]current page.north west)
+      {\LightTag[BMSSoftBlue]{VALIDATE}\\[3pt]
+       \textcolor{BMSNavy}{\bfseries Resume review}\\[1.5pt]\textcolor{BMSMuted}{state revalidated}};
+    \draw[light/flow] (running.south) --
+      node[light/edge label,fill=BMSWhite,midway] {interrupt} (paused.north);
+    \draw[light/flow] (paused.east) -- (resume.west);
+    \draw[light/return] (resume.north) -- ++(0,0.38cm) -| (checking.south);
+    \node[light/adjacent label,anchor=south west]
+      at ([xshift=0.16cm,yshift=0.19cm]resume.north) {continue};
+
+    \fill[BMSPanel,rounded corners=2.4pt]
+      ([xshift=11.48cm,yshift=-1.47cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=3.05cm]
+      at ([xshift=11.78cm,yshift=-1.84cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.1}{9.8}\selectfont\bfseries Recovery contract\par
+       \vspace{0.20cm}
+       \color{BMSText}\mdseries\fontsize{6.6}{8.4}\selectfont
+       A checkpoint records the completed boundary.\par
+       \vspace{0.22cm}
+       Resume begins with checkpoint validation.\par
+       \vspace{0.22cm}
+       The final transition remains subject to the same verification gate.\par};
+
+    \LightFrameFooter{The lower path is distinct from normal execution}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{State, evidence, and recovery stay separate}{SUMMARY}{06}
+
+    \fill[BMSSoftBlue,rounded corners=4pt]
+      ([xshift=0.82cm,yshift=-1.60cm]current page.north west) rectangle
+      ([xshift=7.55cm,yshift=-4.02cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.08cm]
+      at ([xshift=1.18cm,yshift=-1.96cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries CONTROL\par
+       \vspace{0.16cm}
+       \color{BMSNavy}\fontsize{8.5}{10.2}\selectfont\bfseries
+       The coordinator owns state and release.\par
+       \vspace{0.22cm}
+       \color{BMSText}\mdseries\fontsize{6.7}{8.6}\selectfont
+       It applies policy, schedules bounded work, and opens the verification gate.\par};
+
+    \fill[BMSSoftGreen,rounded corners=4pt]
+      ([xshift=7.85cm,yshift=-1.60cm]current page.north west) rectangle
+      ([xshift=15.18cm,yshift=-4.02cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.66cm]
+      at ([xshift=8.21cm,yshift=-1.96cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries EXECUTION\par
+       \vspace{0.16cm}
+       \color{BMSNavy}\fontsize{8.5}{10.2}\selectfont\bfseries
+       Workers return durable evidence.\par
+       \vspace{0.22cm}
+       \color{BMSText}\mdseries\fontsize{6.7}{8.6}\selectfont
+       Source, analysis, and review agents return artifacts and checkpoints without owning global state.\par};
+
+    \fill[BMSSoftOrange,rounded corners=4pt]
+      ([xshift=0.82cm,yshift=-4.34cm]current page.north west) rectangle
+      ([xshift=15.18cm,yshift=-6.46cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.35cm]
+      at ([xshift=1.18cm,yshift=-4.70cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries RECOVERY\par
+       \vspace{0.16cm}
+       \color{BMSNavy}\fontsize{8.5}{10.2}\selectfont\bfseries
+       Resume begins with validation.\par
+       \vspace{0.22cm}
+       \color{BMSText}\mdseries\fontsize{6.7}{8.6}\selectfont
+       A checkpoint records the completed boundary before execution returns to the verification path.\par};
+    \node[light/node,fill=BMSWhite,text width=1.62cm] (sum-paused)
+      at ([xshift=9.01cm,yshift=-5.39cm]current page.north west) {Paused};
+    \node[light/node,fill=BMSWhite,text width=1.88cm] (sum-review)
+      at ([xshift=11.48cm,yshift=-5.39cm]current page.north west) {Resume review};
+    \node[light/node,fill=BMSWhite,text width=1.62cm] (sum-check)
+      at ([xshift=13.88cm,yshift=-5.39cm]current page.north west) {Checking};
+    \draw[light/arrow] (sum-paused.east) -- (sum-review.west);
+    \draw[light/arrow] (sum-review.east) -- (sum-check.west);
+
+    \LightFrameFooter{Each boundary remains visible and independently inspectable}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

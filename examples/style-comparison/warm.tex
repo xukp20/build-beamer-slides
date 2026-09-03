@@ -1,0 +1,53 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/warm-editorial/theme.tex}
+
+\begin{document}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMEIvory] (current page.south west) rectangle (current page.north east);
+    \WarmFrameHeader{Edges become transition probabilities}{FOUNDATION}{01}
+
+    \coordinate (A) at ([xshift=2.05cm,yshift=-3.05cm]current page.north west);
+    \coordinate (B) at ([xshift=4.75cm,yshift=-2.18cm]current page.north west);
+    \coordinate (C) at ([xshift=7.55cm,yshift=-3.30cm]current page.north west);
+    \coordinate (D) at ([xshift=5.32cm,yshift=-5.42cm]current page.north west);
+    \coordinate (E) at ([xshift=2.18cm,yshift=-5.18cm]current page.north west);
+    \draw[warm/graph edge] (A)--(B)--(C)--(D)--(E)--(A);
+    \draw[warm/graph edge] (A)--(D);
+    \draw[warm/graph edge] (B)--(D);
+    \node[warm/graph node] (nodeA) at (A) {a};
+    \node[warm/graph current] (nodeB) at (B) {b};
+    \node[warm/graph node] (nodeC) at (C) {c};
+    \node[warm/graph node] (nodeD) at (D) {d};
+    \node[warm/graph node] (nodeE) at (E) {e};
+    \node[anchor=south,inner sep=0pt]
+      at ([yshift=0.16cm]nodeB.north) {\WarmTag[BMESand]{CURRENT}};
+    \draw[warm/highlight] (nodeB.south east) to[out=-58,in=72] (nodeD.north east);
+    \node[warm/adjacent label,anchor=west,text=BMETerracotta,font=\sffamily\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=0.75cm,yshift=-1.25cm]nodeB.east) {possible step};
+
+    \draw[BMEStone,line width=0.45pt]
+      ([xshift=8.55cm,yshift=-1.62cm]current page.north west) --
+      ([xshift=8.55cm,yshift=-7.55cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=5.78cm]
+      at ([xshift=9.05cm,yshift=-1.82cm]current page.north west)
+      {\color{BMETerracotta}\sffamily\fontsize{6.1}{7.4}\selectfont\bfseries DEFINITION\par
+       \vspace{0.14cm}
+       \color{BMEBrown}\rmfamily\fontsize{10.4}{12.4}\selectfont\bfseries
+       Move to a neighbor in proportion to its edge weight.\par
+       \vspace{0.26cm}
+       \WarmBodyText
+       For weighted adjacency matrix $W$,\par
+       \vspace{0.20cm}
+       \WarmDisplayMath
+       \[
+         P_{ij}=\frac{W_{ij}}{\sum_k W_{ik}}.
+       \]
+       \vspace{0.06cm}
+       \WarmBodyText
+       Every row sums to one, and the graph specifies the available transitions.\par};
+
+    \WarmFrameFooter{Style comparison · warm editorial}
+  \end{tikzpicture}
+\end{frame}
+\end{document}

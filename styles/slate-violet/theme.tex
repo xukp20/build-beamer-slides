@@ -1,0 +1,97 @@
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta,backgrounds,calc,fit,positioning,shapes.geometric}
+
+\setsansfont{TeX Gyre Heros}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{BSVPrimary}{HTML}{4F496B}
+\definecolor{BSVText}{HTML}{44464F}
+\definecolor{BSVMuted}{HTML}{7D7D89}
+\definecolor{BSVLine}{HTML}{D0CED8}
+\definecolor{BSVPanel}{HTML}{F5F4F7}
+\definecolor{BSVLavender}{HTML}{EEEBF4}
+\definecolor{BSVSage}{HTML}{EAF1ED}
+\definecolor{BSVSand}{HTML}{F4EEE6}
+\definecolor{BSVWhite}{HTML}{FFFFFF}
+\definecolor{BSVFlow}{HTML}{5C5872}
+\definecolor{BSVReturn}{HTML}{738F84}
+\definecolor{BSVOptional}{HTML}{92909A}
+
+\setbeamercolor{normal text}{fg=BSVText,bg=BSVWhite}
+\setbeamercolor{structure}{fg=BSVPrimary}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+\AtBeginEnvironment{frame}{\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\relax}
+
+\newcommand{\SlateFrameHeader}[3]{%
+  \node[anchor=north west,inner sep=0pt,text=BSVPrimary,
+        font=\fontsize{16}{19}\selectfont\bfseries]
+    at ([xshift=0.76cm,yshift=-0.46cm]current page.north west) {#1};
+  \node[anchor=north east,inner sep=0pt,text=BSVMuted,
+        font=\fontsize{6.8}{8.5}\selectfont\bfseries]
+    at ([xshift=-1.48cm,yshift=-0.59cm]current page.north east) {#2};
+  \node[anchor=north east,inner sep=0pt,text=BSVPrimary,
+        font=\fontsize{9}{11}\selectfont\bfseries]
+    at ([xshift=-0.76cm,yshift=-0.53cm]current page.north east) {#3};
+  \draw[BSVLine,line width=0.5pt]
+    ([xshift=0.76cm,yshift=-1.16cm]current page.north west) --
+    ([xshift=-0.76cm,yshift=-1.16cm]current page.north east);
+  \draw[BSVPrimary,line width=1.0pt]
+    ([xshift=0.76cm,yshift=-1.16cm]current page.north west) -- ++(1.18cm,0);
+}
+
+\newcommand{\SlateFrameFooter}[1]{%
+  \draw[BSVLine,line width=0.5pt]
+    ([xshift=0.76cm,yshift=0.44cm]current page.south west) --
+    ([xshift=-0.76cm,yshift=0.44cm]current page.south east);
+  \node[anchor=south west,inner sep=0pt,text=BSVMuted,
+        font=\fontsize{5.8}{7}\selectfont]
+    at ([xshift=0.76cm,yshift=0.17cm]current page.south west) {#1};
+}
+
+\newcommand{\SlateTag}[2][BSVLavender]{%
+  \tikz[baseline=(slatetag.base)]{%
+    \node[rounded corners=3pt,fill=#1,draw=none,minimum width=0pt,minimum height=0pt,
+          outer sep=0pt,inner xsep=3.6pt,inner ysep=1.2pt,text height=1.15ex,text depth=0.20ex,
+          text=BSVPrimary,font=\fontsize{4.9}{5.8}\selectfont\bfseries] (slatetag) {#2};}%
+}
+
+\newcommand{\SlateBody}[1]{%
+  {\raggedright\rightskip=0pt plus 1fil\spaceskip=0.30em plus 0.08em minus 0.04em
+   \hyphenpenalty=10000\exhyphenpenalty=10000\relax #1\par}%
+}
+
+\tikzset{
+  slate/prose/.style={align=left,execute at begin node={\raggedright\rightskip=0pt plus 1fil\spaceskip=0.30em plus 0.08em minus 0.04em\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  slate/card/.style={rounded corners=3pt,draw=BSVLine,line width=0.45pt,fill=BSVWhite},
+  slate/panel/.style={rounded corners=4pt,draw=BSVLine,line width=0.45pt,fill=BSVPanel},
+  slate/group/.style={rounded corners=5pt,draw=BSVLine,line width=0.45pt,fill=BSVPanel},
+  slate/node/.style={rounded corners=3pt,draw=BSVLine,line width=0.55pt,fill=BSVWhite,
+    minimum height=0.74cm,inner xsep=0.17cm,inner ysep=0.12cm,align=center,
+    text=BSVText,font=\fontsize{6.4}{7.8}\selectfont},
+  slate/action/.style={slate/node,align=left,inner xsep=0.22cm,inner ysep=0.16cm},
+  slate/decision/.style={diamond,aspect=1.48,draw=BSVPrimary,line width=0.62pt,fill=BSVWhite,
+    minimum width=1.18cm,minimum height=0.82cm,inner sep=0.05cm,align=center,
+    text=BSVPrimary,font=\fontsize{5.7}{6.8}\selectfont\bfseries},
+  slate/terminal/.style={rounded corners=8pt,draw=BSVLine,line width=0.55pt,fill=BSVWhite,
+    minimum height=0.62cm,inner xsep=0.20cm,inner ysep=0.10cm,align=center,
+    text=BSVPrimary,font=\fontsize{6.0}{7.2}\selectfont\bfseries},
+  slate/artifact/.style={cylinder,shape border rotate=90,aspect=0.30,draw=BSVLine,line width=0.55pt,
+    fill=BSVWhite,minimum width=1.45cm,minimum height=0.92cm,inner xsep=0.14cm,inner ysep=0.10cm,
+    align=center,text=BSVPrimary,font=\fontsize{5.7}{6.9}\selectfont\bfseries},
+  slate/flow/.style={-{Stealth[length=1.35mm,width=1.0mm]},draw=BSVFlow,line width=0.66pt,
+    line cap=round,line join=round},
+  slate/return/.style={-{Stealth[length=1.30mm,width=0.95mm]},draw=BSVReturn,line width=0.61pt,
+    line cap=round,line join=round},
+  slate/optional/.style={-{Stealth[length=1.25mm,width=0.92mm]},draw=BSVOptional,line width=0.56pt,
+    dashed,dash pattern=on 3.1pt off 2.5pt,line cap=round,line join=round},
+  slate/evidence/.style={-{Stealth[length=1.20mm,width=0.90mm]},draw=BSVReturn,line width=0.54pt,
+    dash pattern=on 4.5pt off 2.2pt,line cap=round,line join=round},
+  slate/edge label/.style={text=BSVMuted,font=\fontsize{5.4}{6.6}\selectfont,fill=BSVWhite,
+    rounded corners=1.5pt,inner xsep=2.4pt,inner ysep=1.1pt},
+  slate/adjacent label/.style={text=BSVMuted,font=\fontsize{5.4}{6.6}\selectfont,inner sep=0pt}
+}

@@ -1,0 +1,317 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/slate-violet/theme.tex}
+
+\begin{document}
+
+% 01 — Cover
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BSVLavender]
+      ([xshift=10.70cm]current page.north west) rectangle (current page.south east);
+    \fill[BSVPrimary]
+      ([xshift=0.90cm,yshift=-1.10cm]current page.north west) rectangle
+      ([xshift=1.02cm,yshift=-7.88cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,
+          font=\fontsize{7}{8.5}\selectfont\bfseries]
+      at ([xshift=1.40cm,yshift=-1.34cm]current page.north west)
+      {WORKED EXAMPLE · SYSTEM MIGRATION};
+    \node[anchor=north west,inner sep=0pt,text=BSVPrimary,
+          font=\fontsize{23}{27}\selectfont\bfseries,text width=8.7cm]
+      at ([xshift=1.40cm,yshift=-2.08cm]current page.north west)
+      {Migrating a service without losing control};
+    \node[anchor=north west,inner sep=0pt,text=BSVText,
+          font=\fontsize{9.8}{12.6}\selectfont,text width=7.9cm]
+      at ([xshift=1.42cm,yshift=-3.86cm]current page.north west)
+      {A staged transition from a legacy runtime to a modular platform};
+    \node[anchor=south west,inner sep=0pt,text=BSVMuted,
+          font=\fontsize{7.2}{9}\selectfont]
+      at ([xshift=1.42cm,yshift=0.72cm]current page.south west)
+      {Architecture review · September 2026};
+
+    \node[slate/card,minimum width=3.22cm,minimum height=1.08cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-2.34cm]current page.north west)
+      {\SlateTag[BSVSand]{CURRENT}\hspace{0.13cm}\textcolor{BSVPrimary}{\bfseries Legacy runtime}};
+    \node[slate/card,minimum width=3.22cm,minimum height=1.08cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-4.30cm]current page.north west)
+      {\SlateTag[BSVLavender]{CONTROL}\hspace{0.13cm}\textcolor{BSVPrimary}{\bfseries Migration gates}};
+    \node[slate/card,minimum width=3.22cm,minimum height=1.08cm,fill=BSVWhite]
+      at ([xshift=13.30cm,yshift=-6.26cm]current page.north west)
+      {\SlateTag[BSVSage]{TARGET}\hspace{0.13cm}\textcolor{BSVPrimary}{\bfseries Modular platform}};
+    \draw[slate/flow]
+      ([xshift=13.30cm,yshift=-2.88cm]current page.north west) --
+      ([xshift=13.30cm,yshift=-3.76cm]current page.north west);
+    \draw[slate/flow]
+      ([xshift=13.30cm,yshift=-4.84cm]current page.north west) --
+      ([xshift=13.30cm,yshift=-5.72cm]current page.north west);
+  \end{tikzpicture}
+\end{frame}
+
+% 02 — Target architecture
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \SlateFrameHeader{The target has three responsibility layers}{ARCHITECTURE}{02}
+
+    \fill[BSVLavender,rounded corners=4pt]
+      ([xshift=0.88cm,yshift=-1.52cm]current page.north west) rectangle
+      ([xshift=11.86cm,yshift=-3.18cm]current page.north west);
+    \fill[BSVPanel,rounded corners=4pt]
+      ([xshift=0.88cm,yshift=-3.38cm]current page.north west) rectangle
+      ([xshift=11.86cm,yshift=-5.30cm]current page.north west);
+    \fill[BSVSage,rounded corners=4pt]
+      ([xshift=0.88cm,yshift=-5.50cm]current page.north west) rectangle
+      ([xshift=11.86cm,yshift=-7.65cm]current page.north west);
+
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,font=\fontsize{5.7}{6.9}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-1.74cm]current page.north west) {INTERFACE};
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,font=\fontsize{5.7}{6.9}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-3.61cm]current page.north west) {CONTROL};
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,font=\fontsize{5.7}{6.9}\selectfont\bfseries]
+      at ([xshift=1.14cm,yshift=-5.73cm]current page.north west) {PROVIDER RUNTIME};
+
+    \node[slate/node,minimum width=2.34cm,fill=BSVWhite] (console)
+      at ([xshift=3.55cm,yshift=-2.43cm]current page.north west) {Operator console};
+    \node[slate/node,minimum width=2.34cm,fill=BSVWhite] (api)
+      at ([xshift=8.82cm,yshift=-2.43cm]current page.north west) {Project API};
+
+    \node[slate/node,minimum width=2.28cm,fill=BSVWhite] (coord)
+      at ([xshift=2.82cm,yshift=-4.52cm]current page.north west) {Migration coordinator};
+    \node[slate/node,minimum width=2.06cm,fill=BSVWhite] (gate)
+      at ([xshift=6.27cm,yshift=-4.52cm]current page.north west) {Policy gate};
+    \node[slate/node,minimum width=2.06cm,fill=BSVWhite] (audit)
+      at ([xshift=9.68cm,yshift=-4.52cm]current page.north west) {Audit log};
+
+    \node[slate/node,minimum width=2.05cm,fill=BSVWhite] (legacy)
+      at ([xshift=3.65cm,yshift=-6.69cm]current page.north west) {Legacy adapter};
+    \node[slate/node,minimum width=2.05cm,fill=BSVWhite] (native)
+      at ([xshift=6.27cm,yshift=-6.69cm]current page.north west) {Native provider};
+    \node[slate/artifact,minimum width=1.75cm,fill=BSVWhite] (state)
+      at ([xshift=9.83cm,yshift=-6.66cm]current page.north west) {State store};
+
+    \draw[slate/flow] (console.south) -- (coord.north);
+    \draw[slate/flow] (api.south) -- (gate.north);
+    \draw[slate/flow] (coord.east) -- (gate.west);
+    \draw[slate/evidence] (gate.east) -- (audit.west);
+    \draw[slate/flow] (coord.south) -- (legacy.north);
+    \draw[slate/flow] (gate.south) -- (native.north);
+    \draw[slate/evidence] (audit.south) -- (state.north);
+
+    \fill[BSVPanel,rounded corners=4pt]
+      ([xshift=12.18cm,yshift=-1.52cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.65cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slate/prose,text width=2.60cm]
+      at ([xshift=12.42cm,yshift=-1.88cm]current page.north west)
+      {\color{BSVPrimary}\fontsize{8.1}{9.8}\selectfont\bfseries Boundary rule\par
+       \vspace{0.17cm}
+       \color{BSVText}\mdseries\fontsize{6.55}{8.25}\selectfont
+       The interface requests work. Control decides when it is safe. Providers implement stable contracts.\par
+       \vspace{0.30cm}
+       \color{BSVPrimary}\fontsize{7.2}{8.7}\selectfont\bfseries Evidence\par
+       \vspace{0.12cm}
+       \color{BSVText}\mdseries\fontsize{6.5}{8.2}\selectfont
+       Every decision records the gate and a recoverable state.\par};
+
+    \SlateFrameFooter{Slate Violet example · layered architecture}
+  \end{tikzpicture}
+\end{frame}
+
+% 03 — Dense migration workflow
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \SlateFrameHeader{A gated sequence controls each migration}{MIGRATION FLOW}{03}
+
+    \fill[BSVPanel,rounded corners=5pt]
+      ([xshift=0.78cm,yshift=-1.46cm]current page.north west) rectangle
+      ([xshift=12.68cm,yshift=-7.74cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BSVMuted,font=\fontsize{5.7}{6.9}\selectfont\bfseries]
+      at ([xshift=1.04cm,yshift=-1.68cm]current page.north west) {COMPONENT MIGRATION LANE};
+
+    \node[slate/terminal,minimum width=1.30cm,text width=0.94cm,fill=BSVSand] (legacy)
+      at ([xshift=1.62cm,yshift=-3.16cm]current page.north west) {Legacy\\service};
+    \node[slate/action,text width=1.28cm,minimum height=1.28cm] (inventory)
+      at ([xshift=3.44cm,yshift=-3.16cm]current page.north west)
+      {\SlateTag[BSVLavender]{ANALYSE}\\[3.2pt]\textcolor{BSVPrimary}{\bfseries Inventory}\\[1.6pt]
+       \textcolor{BSVMuted}{Calls · state}};
+    \node[slate/action,text width=1.34cm,minimum height=1.28cm] (adapter)
+      at ([xshift=5.60cm,yshift=-3.16cm]current page.north west)
+      {\SlateTag[BSVSand]{BUILD}\\[3.2pt]\textcolor{BSVPrimary}{\bfseries Adapter}\\[1.6pt]
+       \textcolor{BSVMuted}{Stable API}};
+    \node[slate/action,text width=1.34cm,minimum height=1.28cm] (shadow)
+      at ([xshift=7.82cm,yshift=-3.16cm]current page.north west)
+      {\SlateTag[BSVSage]{VERIFY}\\[3.2pt]\textcolor{BSVPrimary}{\bfseries Shadow run}\\[1.6pt]
+       \textcolor{BSVMuted}{Output check}};
+    \node[slate/decision] (decision)
+      at ([xshift=9.70cm,yshift=-3.16cm]current page.north west) {Contract\\holds?};
+    \node[slate/terminal,minimum width=1.16cm,text width=0.82cm,fill=BSVSage] (switch)
+      at ([xshift=11.78cm,yshift=-3.16cm]current page.north west) {Default\\route};
+
+    \node[slate/node,minimum width=1.50cm,minimum height=0.66cm,fill=BSVWhite] (policy)
+      at ([xshift=5.60cm,yshift=-1.98cm]current page.north west) {Migration policy};
+    \node[slate/artifact,minimum width=1.52cm] (baseline)
+      at ([xshift=3.44cm,yshift=-5.35cm]current page.north west) {Baseline\\snapshot};
+    \node[slate/artifact,minimum width=1.52cm] (report)
+      at ([xshift=7.82cm,yshift=-5.35cm]current page.north west) {Comparison\\report};
+
+    \draw[slate/flow] (legacy.east) -- (inventory.west);
+    \draw[slate/flow] (inventory.east) -- (adapter.west);
+    \draw[slate/flow] (adapter.east) -- (shadow.west);
+    \draw[slate/flow] (shadow.east) -- (decision.west);
+    \draw[slate/flow] (decision.east) --
+      node[slate/edge label,midway,inner xsep=1.2pt,
+           font=\fontsize{4.9}{6.0}\selectfont] {pass} (switch.west);
+    \draw[slate/optional] (policy.south) -- (adapter.north);
+    \draw[slate/evidence] (inventory.south) -- (baseline.north);
+    \draw[slate/evidence] (shadow.south) -- (report.north);
+
+    \coordinate (returnbend) at ([xshift=9.70cm,yshift=-6.70cm]current page.north west);
+    \coordinate (returnlane) at ([xshift=5.60cm,yshift=-6.70cm]current page.north west);
+    \draw[slate/return] (decision.south) -- (returnbend) -- (returnlane) -- (adapter.south);
+    \node[slate/adjacent label,anchor=south]
+      at ([xshift=7.78cm,yshift=-6.58cm]current page.north west) {revise adapter using the comparison report};
+
+    \fill[BSVLavender,rounded corners=4pt]
+      ([xshift=12.94cm,yshift=-1.46cm]current page.north west) rectangle
+      ([xshift=15.24cm,yshift=-7.74cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slate/prose,text width=1.80cm]
+      at ([xshift=13.22cm,yshift=-1.86cm]current page.north west)
+      {\color{BSVPrimary}\fontsize{7.8}{9.4}\selectfont\bfseries Gate inputs\par
+       \vspace{0.16cm}
+       \color{BSVText}\mdseries\fontsize{6.5}{8.2}\selectfont
+       Contract tests\\[2pt]
+       Output checks\\[2pt]
+       State checks\\[2pt]
+       Tested rollback\par
+       \vspace{0.30cm}
+       \color{BSVPrimary}\fontsize{7.1}{8.6}\selectfont\bfseries Line types\par
+       \vspace{0.16cm}
+       \tikz{\draw[slate/flow] (0,0)--(0.55,0);}\hspace{0.08cm}\color{BSVText}\fontsize{5.9}{7.4}\selectfont progress\par
+       \vspace{0.10cm}
+       \tikz{\draw[slate/return] (0,0)--(0.55,0);}\hspace{0.08cm}\color{BSVText}\fontsize{5.9}{7.4}\selectfont revision\par
+       \vspace{0.10cm}
+       \tikz{\draw[slate/optional] (0,0)--(0.55,0);}\hspace{0.08cm}\color{BSVText}\fontsize{5.9}{7.4}\selectfont optional\par};
+
+    \SlateFrameFooter{Slate Violet example · dense workflow and connector stress test}
+  \end{tikzpicture}
+\end{frame}
+
+% 04 — Risk matrix
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \SlateFrameHeader{Sequence work by impact and reversibility}{RISK REVIEW}{04}
+
+    \fill[BSVSage]
+      ([xshift=1.30cm,yshift=-4.58cm]current page.north west) rectangle
+      ([xshift=6.33cm,yshift=-7.18cm]current page.north west);
+    \fill[BSVPanel]
+      ([xshift=6.33cm,yshift=-4.58cm]current page.north west) rectangle
+      ([xshift=11.36cm,yshift=-7.18cm]current page.north west);
+    \fill[BSVLavender]
+      ([xshift=1.30cm,yshift=-1.82cm]current page.north west) rectangle
+      ([xshift=6.33cm,yshift=-4.58cm]current page.north west);
+    \fill[BSVSand]
+      ([xshift=6.33cm,yshift=-1.82cm]current page.north west) rectangle
+      ([xshift=11.36cm,yshift=-4.58cm]current page.north west);
+    \draw[BSVLine,line width=0.55pt]
+      ([xshift=1.30cm,yshift=-7.18cm]current page.north west) --
+      ([xshift=11.36cm,yshift=-7.18cm]current page.north west);
+    \draw[BSVLine,line width=0.55pt]
+      ([xshift=1.30cm,yshift=-7.18cm]current page.north west) --
+      ([xshift=1.30cm,yshift=-1.82cm]current page.north west);
+    \draw[BSVLine,line width=0.45pt]
+      ([xshift=6.33cm,yshift=-7.18cm]current page.north west) --
+      ([xshift=6.33cm,yshift=-1.82cm]current page.north west);
+    \draw[BSVLine,line width=0.45pt]
+      ([xshift=1.30cm,yshift=-4.58cm]current page.north west) --
+      ([xshift=11.36cm,yshift=-4.58cm]current page.north west);
+
+    \node[anchor=north,text=BSVMuted,font=\fontsize{5.9}{7.2}\selectfont]
+      at ([xshift=3.82cm,yshift=-7.36cm]current page.north west) {Easy to reverse};
+    \node[anchor=north,text=BSVMuted,font=\fontsize{5.9}{7.2}\selectfont]
+      at ([xshift=8.85cm,yshift=-7.36cm]current page.north west) {Hard to reverse};
+    \node[anchor=south,rotate=90,text=BSVMuted,font=\fontsize{5.9}{7.2}\selectfont]
+      at ([xshift=0.92cm,yshift=-4.46cm]current page.north west) {Operational impact};
+    \node[anchor=west,text=BSVMuted,font=\fontsize{5.6}{6.8}\selectfont]
+      at ([xshift=1.43cm,yshift=-2.05cm]current page.north west) {HIGH};
+    \node[anchor=west,text=BSVMuted,font=\fontsize{5.6}{6.8}\selectfont]
+      at ([xshift=1.43cm,yshift=-6.94cm]current page.north west) {LOW};
+
+    \node[slate/node,minimum width=2.14cm,fill=BSVWhite] at ([xshift=3.65cm,yshift=-3.08cm]current page.north west)
+      {Partial traffic switch};
+    \node[slate/node,minimum width=2.14cm,fill=BSVWhite] at ([xshift=8.60cm,yshift=-2.82cm]current page.north west)
+      {State format change};
+    \node[slate/node,minimum width=2.14cm,fill=BSVWhite] at ([xshift=8.98cm,yshift=-4.02cm]current page.north west)
+      {Default provider};
+    \node[slate/node,minimum width=2.14cm,fill=BSVWhite] at ([xshift=3.78cm,yshift=-5.80cm]current page.north west)
+      {Adapter wrapper};
+    \node[slate/node,minimum width=2.14cm,fill=BSVWhite] at ([xshift=8.66cm,yshift=-6.10cm]current page.north west)
+      {Audit schema};
+
+    \fill[BSVPanel,rounded corners=4pt]
+      ([xshift=11.76cm,yshift=-1.82cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.18cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slate/prose,text width=2.98cm]
+      at ([xshift=12.00cm,yshift=-2.15cm]current page.north west)
+      {\color{BSVPrimary}\fontsize{8.0}{9.7}\selectfont\bfseries Decision rule\par
+       \vspace{0.18cm}
+       \color{BSVText}\mdseries\fontsize{6.55}{8.3}\selectfont
+       Start with reversible changes. For harder changes, require a tested rollback and an approved maintenance window.\par
+       \vspace{0.34cm}
+       \color{BSVPrimary}\fontsize{7.1}{8.6}\selectfont\bfseries Reading the matrix\par
+       \vspace{0.13cm}
+       \color{BSVText}\mdseries\fontsize{6.5}{8.2}\selectfont
+       This matrix guides sequencing. It does not estimate probability.\par};
+
+    \SlateFrameFooter{Slate Violet example · qualitative risk matrix}
+  \end{tikzpicture}
+\end{frame}
+
+% 05 — Roadmap
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \SlateFrameHeader{Progress depends on measurable checks}{ROADMAP}{05}
+
+    \node[slate/action,text width=2.20cm,minimum height=2.42cm,fill=BSVWhite] (s1)
+      at ([xshift=2.20cm,yshift=-3.35cm]current page.north west)
+      {\SlateTag[BSVLavender]{STAGE 1}\\[5pt]
+       \textcolor{BSVPrimary}{\fontsize{8.0}{9.6}\selectfont\bfseries Baseline}\\[3pt]
+       \textcolor{BSVText}{\fontsize{6.5}{8.2}\selectfont Record calls, state, latency, and failures.}\\[5pt]
+       \textcolor{BSVMuted}{\fontsize{5.7}{7.0}\selectfont Gate: replay is stable}};
+    \node[slate/action,text width=2.20cm,minimum height=2.42cm,fill=BSVWhite] (s2)
+      at ([xshift=5.45cm,yshift=-3.35cm]current page.north west)
+      {\SlateTag[BSVSage]{STAGE 2}\\[5pt]
+       \textcolor{BSVPrimary}{\fontsize{8.0}{9.6}\selectfont\bfseries Shadow}\\[3pt]
+       \textcolor{BSVText}{\fontsize{6.5}{8.2}\selectfont Run both providers. Compare outputs.}\\[5pt]
+       \textcolor{BSVMuted}{\fontsize{5.7}{7.0}\selectfont Gate: no critical drift}};
+    \node[slate/action,text width=2.20cm,minimum height=2.42cm,fill=BSVWhite] (s3)
+      at ([xshift=8.70cm,yshift=-3.35cm]current page.north west)
+      {\SlateTag[BSVSand]{STAGE 3}\\[5pt]
+       \textcolor{BSVPrimary}{\fontsize{8.0}{9.6}\selectfont\bfseries Partial traffic}\\[3pt]
+       \textcolor{BSVText}{\fontsize{6.5}{8.2}\selectfont Send selected jobs to the new provider.}\\[5pt]
+       \textcolor{BSVMuted}{\fontsize{5.7}{7.0}\selectfont Gate: rollback tested}};
+    \node[slate/action,text width=2.20cm,minimum height=2.42cm,fill=BSVWhite] (s4)
+      at ([xshift=11.95cm,yshift=-3.35cm]current page.north west)
+      {\SlateTag[BSVLavender]{STAGE 4}\\[5pt]
+       \textcolor{BSVPrimary}{\fontsize{8.0}{9.6}\selectfont\bfseries Default}\\[3pt]
+       \textcolor{BSVText}{\fontsize{6.5}{8.2}\selectfont Use the new provider by default.}\\[5pt]
+       \textcolor{BSVMuted}{\fontsize{5.7}{7.0}\selectfont Gate: legacy is idle}};
+
+    \draw[slate/flow] (s1.east) -- (s2.west);
+    \draw[slate/flow] (s2.east) -- (s3.west);
+    \draw[slate/flow] (s3.east) -- (s4.west);
+
+    \fill[BSVPanel,rounded corners=4pt]
+      ([xshift=0.94cm,yshift=-5.36cm]current page.north west) rectangle
+      ([xshift=15.10cm,yshift=-7.62cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,text=BSVPrimary,font=\fontsize{8.0}{9.6}\selectfont\bfseries]
+      at ([xshift=1.24cm,yshift=-5.72cm]current page.north west) {Exit condition};
+    \node[slate/node,minimum width=3.16cm,fill=BSVWhite]
+      at ([xshift=4.62cm,yshift=-6.66cm]current page.north west) {All supported workloads pass};
+    \node[slate/node,minimum width=3.16cm,fill=BSVWhite]
+      at ([xshift=8.37cm,yshift=-6.66cm]current page.north west) {Rollback remains available};
+    \node[slate/node,minimum width=3.16cm,fill=BSVWhite]
+      at ([xshift=12.12cm,yshift=-6.66cm]current page.north west) {Audit records are complete};
+
+    \SlateFrameFooter{Slate Violet example · gated migration roadmap}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

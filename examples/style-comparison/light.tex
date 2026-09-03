@@ -1,0 +1,55 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/light/theme.tex}
+
+\begin{document}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Edges become transition probabilities}{FOUNDATION}{01}
+
+    \fill[BMSPanel,rounded corners=4pt]
+      ([xshift=0.78cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=9.20cm,yshift=-7.82cm]current page.north west);
+    \coordinate (A) at ([xshift=1.85cm,yshift=-3.12cm]current page.north west);
+    \coordinate (B) at ([xshift=4.20cm,yshift=-2.20cm]current page.north west);
+    \coordinate (C) at ([xshift=7.25cm,yshift=-3.25cm]current page.north west);
+    \coordinate (D) at ([xshift=5.10cm,yshift=-5.65cm]current page.north west);
+    \coordinate (E) at ([xshift=2.05cm,yshift=-5.38cm]current page.north west);
+    \draw[light/graph edge] (A)--(B)--(C)--(D)--(E)--(A);
+    \draw[light/graph edge] (A)--(D);
+    \draw[light/graph edge] (B)--(D);
+    \node[light/graph node] (nodeA) at (A) {a};
+    \node[light/graph current] (nodeB) at (B) {b};
+    \node[light/graph node] (nodeC) at (C) {c};
+    \node[light/graph node] (nodeD) at (D) {d};
+    \node[light/graph node] (nodeE) at (E) {e};
+    \node[anchor=south,inner sep=0pt]
+      at ([yshift=0.16cm]nodeB.north) {\LightTag[BMSSoftOrange]{CURRENT}};
+    \draw[light/highlight] (nodeB.south east) to[out=-58,in=72] (nodeD.north east);
+    \node[light/adjacent label,anchor=west,text=BMSNavy,font=\fontsize{5.8}{7}\selectfont\bfseries]
+      at ([xshift=0.75cm,yshift=-1.25cm]nodeB.east) {possible step};
+
+    \fill[BMSSoftBlue,rounded corners=4pt]
+      ([xshift=9.48cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=5.06cm]
+      at ([xshift=9.82cm,yshift=-1.85cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries DEFINITION\par
+       \vspace{0.15cm}
+       \color{BMSNavy}\fontsize{8.8}{10.8}\selectfont\bfseries
+       Move to a neighbor in proportion to its edge weight.\par
+       \vspace{0.24cm}
+       \color{BMSText}\mdseries\fontsize{6.7}{8.6}\selectfont
+       For weighted adjacency matrix $W$,\par
+       \vspace{0.16cm}
+       \color{BMSNavy}\fontsize{12.5}{15}\selectfont
+       \[
+         P_{ij}=\frac{W_{ij}}{\sum_k W_{ik}}.
+       \]
+       \vspace{0.06cm}
+       \color{BMSText}\mdseries\fontsize{6.7}{8.6}\selectfont
+       Every row sums to one, and the graph specifies the available transitions.\par};
+
+    \LightFrameFooter{Style comparison · restrained light}
+  \end{tikzpicture}
+\end{frame}
+\end{document}

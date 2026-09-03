@@ -1,0 +1,258 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{../../styles/light/theme.tex}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[BMSSoftGreen]
+      (current page.north west) rectangle ([xshift=4.75cm]current page.south west);
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{7}{8.5}\selectfont\bfseries]
+      at ([xshift=1.02cm,yshift=-1.02cm]current page.north west)
+      {WORKED EXAMPLE · EXPERIMENT REVIEW};
+    \node[anchor=north west,inner sep=0pt,text=BMSNavy,
+          font=\fontsize{22}{26}\selectfont\bfseries,text width=13.1cm]
+      at ([xshift=1.02cm,yshift=-2.15cm]current page.north west)
+      {Evaluating a retrieval pipeline};
+    \node[anchor=north west,inner sep=0pt,text=BMSText,
+          font=\fontsize{10}{12.8}\selectfont,text width=10.8cm]
+      at ([xshift=1.04cm,yshift=-3.28cm]current page.north west)
+      {Experimental setup, primary result, tradeoff, and limitations};
+    \draw[BMSNavy,line width=1.05pt]
+      ([xshift=1.04cm,yshift=-4.15cm]current page.north west) -- ++(1.35cm,0);
+    \node[anchor=south west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.8}{8.5}\selectfont]
+      at ([xshift=1.04cm,yshift=0.72cm]current page.south west)
+      {Synthetic data · layout demonstration only};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{The comparison changes one stage at a time}{SETUP}{02}
+
+    \fill[BMSPanel,rounded corners=2.4pt]
+      ([xshift=0.78cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=7.26cm,yshift=-3.15cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=5.85cm]
+      at ([xshift=1.08cm,yshift=-1.80cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.2}\selectfont\bfseries RESEARCH QUESTION\par
+       \vspace{0.14cm}
+       \color{BMSNavy}\fontsize{9.0}{11.2}\selectfont\bfseries
+       Can cached indexing cut query latency without reducing Recall@10?\par};
+
+    \foreach \x/\fillcolor/\metric/\definition in {
+      7.55/BMSSoftBlue/Recall@10/{relevant share},
+      10.12/BMSSoftGreen/{Latency p95}/{end-to-end ms},
+      12.69/BMSSoftOrange/{Query cost}/{relative compute}}{
+      \fill[\fillcolor,rounded corners=2.2pt]
+        ([xshift=\x cm,yshift=-1.48cm]current page.north west) rectangle ++(2.31cm,-1.67cm);
+      \node[anchor=north west,inner sep=0pt,slide/prose,text width=1.83cm]
+        at ([xshift=\x cm+0.24cm,yshift=-1.79cm]current page.north west)
+        {\color{BMSNavy}\fontsize{7.5}{9.0}\selectfont\bfseries \metric\par
+         \vspace{0.14cm}
+         \color{BMSText}\mdseries\fontsize{5.9}{7.5}\selectfont \definition\par};
+    }
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=0.86cm,yshift=-3.55cm]current page.north west) {CONTROLLED COMPARISON};
+
+    \fill[BMSNavy,rounded corners=1.5pt]
+      ([xshift=0.86cm,yshift=-3.86cm]current page.north west) rectangle
+      ([xshift=15.12cm,yshift=-4.42cm]current page.north west);
+    \node[anchor=west,inner sep=0pt,text=BMSWhite,font=\fontsize{6.3}{7.6}\selectfont\bfseries]
+      at ([xshift=1.16cm,yshift=-4.14cm]current page.north west) {Variant};
+    \node[anchor=west,inner sep=0pt,text=BMSWhite,font=\fontsize{6.3}{7.6}\selectfont\bfseries]
+      at ([xshift=4.15cm,yshift=-4.14cm]current page.north west) {Index};
+    \node[anchor=west,inner sep=0pt,text=BMSWhite,font=\fontsize{6.3}{7.6}\selectfont\bfseries]
+      at ([xshift=7.15cm,yshift=-4.14cm]current page.north west) {Reranker};
+    \node[anchor=west,inner sep=0pt,text=BMSWhite,font=\fontsize{6.3}{7.6}\selectfont\bfseries]
+      at ([xshift=10.15cm,yshift=-4.14cm]current page.north west) {Queries};
+    \node[anchor=west,inner sep=0pt,text=BMSWhite,font=\fontsize{6.3}{7.6}\selectfont\bfseries]
+      at ([xshift=12.65cm,yshift=-4.14cm]current page.north west) {Runs};
+
+    \foreach \y/\fillcolor/\variant/\index/\rerank/\queries/\runs in {
+      -4.47/BMSWhite/Baseline/on demand/none/{1\,000}/5,
+      -5.27/BMSSoftBlue/Cached/precomputed/none/{1\,000}/5,
+      -6.07/BMSWhite/Cached + rerank/precomputed/cross-encoder/{1\,000}/5}{
+      \fill[\fillcolor]
+        ([xshift=0.86cm,yshift=\y cm]current page.north west) rectangle ++(14.26cm,-0.72cm);
+      \node[anchor=west,inner sep=0pt,text=BMSNavy,font=\fontsize{6.5}{7.9}\selectfont\bfseries]
+        at ([xshift=1.16cm,yshift=\y cm-0.36cm]current page.north west) {\variant};
+      \node[anchor=west,inner sep=0pt,text=BMSText,font=\fontsize{6.3}{7.8}\selectfont]
+        at ([xshift=4.15cm,yshift=\y cm-0.36cm]current page.north west) {\index};
+      \node[anchor=west,inner sep=0pt,text=BMSText,font=\fontsize{6.3}{7.8}\selectfont]
+        at ([xshift=7.15cm,yshift=\y cm-0.36cm]current page.north west) {\rerank};
+      \node[anchor=west,inner sep=0pt,text=BMSText,font=\fontsize{6.3}{7.8}\selectfont]
+        at ([xshift=10.15cm,yshift=\y cm-0.36cm]current page.north west) {\queries};
+      \node[anchor=west,inner sep=0pt,text=BMSText,font=\fontsize{6.3}{7.8}\selectfont]
+        at ([xshift=12.65cm,yshift=\y cm-0.36cm]current page.north west) {\runs};
+    }
+
+    \LightFrameFooter{All values in this deck are synthetic and illustrative}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Cached indexing cuts tail latency}{PRIMARY RESULT}{03}
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=0.92cm,yshift=-1.55cm]current page.north west) {P95 LATENCY · LOWER IS BETTER};
+
+    \draw[BMSLine,line width=0.55pt]
+      ([xshift=2.95cm,yshift=-6.56cm]current page.north west) --
+      ([xshift=10.82cm,yshift=-6.56cm]current page.north west);
+    \foreach \x/\label in {2.95/0,4.82/100,6.69/200,8.56/300,10.43/400}{
+      \draw[BMSLine,line width=0.45pt]
+        ([xshift=\x cm,yshift=-6.50cm]current page.north west) -- ++(0,-0.12cm);
+      \node[anchor=north,inner sep=0pt,text=BMSMuted,font=\fontsize{5.6}{6.8}\selectfont]
+        at ([xshift=\x cm,yshift=-6.68cm]current page.north west) {\label};
+    }
+    \node[anchor=east,inner sep=0pt,text=BMSText,font=\fontsize{6.5}{8}\selectfont]
+      at ([xshift=2.65cm,yshift=-2.64cm]current page.north west) {Baseline};
+    \node[anchor=east,inner sep=0pt,text=BMSText,font=\fontsize{6.5}{8}\selectfont]
+      at ([xshift=2.65cm,yshift=-4.10cm]current page.north west) {Cached};
+    \node[anchor=east,inner sep=0pt,text=BMSText,font=\fontsize{6.5}{8}\selectfont]
+      at ([xshift=2.65cm,yshift=-5.56cm]current page.north west) {Cached + rerank};
+
+    \fill[BMSNavy,rounded corners=1.4pt]
+      ([xshift=2.95cm,yshift=-2.30cm]current page.north west) rectangle ++(7.86cm,-0.68cm);
+    \fill[BMSSoftGreen,rounded corners=1.4pt]
+      ([xshift=2.95cm,yshift=-3.76cm]current page.north west) rectangle ++(3.37cm,-0.68cm);
+    \fill[BMSSoftOrange,rounded corners=1.4pt]
+      ([xshift=2.95cm,yshift=-5.22cm]current page.north west) rectangle ++(4.68cm,-0.68cm);
+    \node[anchor=east,inner sep=0pt,text=BMSWhite,font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=10.58cm,yshift=-2.64cm]current page.north west) {420 ms};
+    \node[anchor=west,inner sep=0pt,text=BMSNavy,font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=6.50cm,yshift=-4.10cm]current page.north west) {180 ms};
+    \node[anchor=west,inner sep=0pt,text=BMSNavy,font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=7.81cm,yshift=-5.56cm]current page.north west) {250 ms};
+
+    \fill[BMSPanel,rounded corners=2.4pt]
+      ([xshift=11.43cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=3.12cm]
+      at ([xshift=11.75cm,yshift=-1.84cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.2}{10}\selectfont\bfseries Reranking adds 70~ms\par
+       \vspace{0.20cm}
+       \color{BMSText}\mdseries\fontsize{6.6}{8.4}\selectfont
+       With reranking, p95 remains 40\% below baseline.\par
+       \vspace{0.24cm}
+       Uncertainty is omitted from these five-run medians.\par};
+
+    \LightFrameFooter{Synthetic medians across five illustrative runs}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Reranking raises recall at 250 ms p95}{TRADEOFF}{04}
+
+    \node[anchor=north west,inner sep=0pt,text=BMSMuted,
+          font=\fontsize{6.2}{7.5}\selectfont\bfseries]
+      at ([xshift=0.92cm,yshift=-1.55cm]current page.north west) {RECALL@10 VS. P95 LATENCY};
+
+    \draw[BMSLine,line width=0.65pt]
+      ([xshift=1.55cm,yshift=-6.55cm]current page.north west) --
+      ([xshift=10.75cm,yshift=-6.55cm]current page.north west);
+    \draw[BMSLine,line width=0.65pt]
+      ([xshift=1.55cm,yshift=-6.55cm]current page.north west) --
+      ([xshift=1.55cm,yshift=-2.05cm]current page.north west);
+    \foreach \x/\label in {2.28/150,4.12/225,5.96/300,7.80/375,9.64/450}{
+      \draw[BMSLine,line width=0.4pt]
+        ([xshift=\x cm,yshift=-6.49cm]current page.north west) -- ++(0,-0.12cm);
+      \node[anchor=north,inner sep=0pt,text=BMSMuted,font=\fontsize{5.5}{6.7}\selectfont]
+        at ([xshift=\x cm,yshift=-6.68cm]current page.north west) {\label};
+    }
+    \foreach \y/\label in {-5.80/.76,-4.68/.79,-3.56/.82,-2.44/.85}{
+      \draw[BMSLine,line width=0.4pt]
+        ([xshift=1.49cm,yshift=\y cm]current page.north west) -- ++(-0.12cm,0);
+      \node[anchor=east,inner sep=0pt,text=BMSMuted,font=\fontsize{5.5}{6.7}\selectfont]
+        at ([xshift=1.30cm,yshift=\y cm]current page.north west) {\label};
+    }
+    \node[anchor=north,inner sep=0pt,text=BMSMuted,font=\fontsize{5.8}{7}\selectfont]
+      at ([xshift=6.12cm,yshift=-7.03cm]current page.north west) {p95 latency (ms)};
+    \node[anchor=south,rotate=90,inner sep=0pt,text=BMSMuted,font=\fontsize{5.8}{7}\selectfont]
+      at ([xshift=0.72cm,yshift=-4.30cm]current page.north west) {Recall@10};
+
+    \fill[BMSNavy] ([xshift=8.90cm,yshift=-5.05cm]current page.north west) circle[radius=2.6pt];
+    \node[anchor=south west,inner sep=1.5pt,text=BMSNavy,font=\fontsize{6.1}{7.4}\selectfont\bfseries]
+      at ([xshift=9.02cm,yshift=-4.96cm]current page.north west) {Baseline};
+    \fill[BMSMuted] ([xshift=3.02cm,yshift=-5.05cm]current page.north west) circle[radius=2.6pt];
+    \node[anchor=south west,inner sep=1.5pt,text=BMSText,font=\fontsize{6.1}{7.4}\selectfont\bfseries]
+      at ([xshift=3.14cm,yshift=-4.96cm]current page.north west) {Cached};
+    \fill[BMSNavy] ([xshift=4.74cm,yshift=-2.82cm]current page.north west) circle[radius=3.3pt];
+    \draw[BMSNavy,line width=0.55pt] ([xshift=4.74cm,yshift=-2.82cm]current page.north west) circle[radius=5.1pt];
+    \node[anchor=south west,inner sep=1.5pt,text=BMSNavy,font=\fontsize{6.1}{7.4}\selectfont\bfseries]
+      at ([xshift=4.88cm,yshift=-2.72cm]current page.north west) {Cached + rerank};
+
+    \draw[BMSMuted,line width=0.55pt,dashed]
+      ([xshift=3.02cm,yshift=-5.05cm]current page.north west) --
+      ([xshift=4.74cm,yshift=-2.82cm]current page.north west);
+
+    \fill[BMSSoftGreen,rounded corners=2.4pt]
+      ([xshift=11.30cm,yshift=-1.48cm]current page.north west) rectangle
+      ([xshift=15.22cm,yshift=-7.82cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=3.22cm]
+      at ([xshift=11.62cm,yshift=-1.84cm]current page.north west)
+      {\color{BMSNavy}\fontsize{8.2}{10}\selectfont\bfseries Tradeoff\par
+       \vspace{0.20cm}
+       \color{BMSText}\mdseries\fontsize{6.6}{8.4}\selectfont
+       Caching lowers latency while recall remains stable.\par
+       \vspace{0.24cm}
+       Reranking raises recall at a moderate latency cost.\par
+       \vspace{0.24cm}
+       Choose the variant after setting a recall threshold.\par};
+
+    \LightFrameFooter{Synthetic data · three illustrative pipeline variants}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \LightFrameHeader{Caching lowers latency; evidence is limited}{INTERPRETATION}{05}
+
+    \fill[BMSSoftGreen,rounded corners=2.4pt]
+      ([xshift=0.82cm,yshift=-1.55cm]current page.north west) rectangle
+      ([xshift=7.58cm,yshift=-6.35cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.10cm]
+      at ([xshift=1.18cm,yshift=-1.92cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries SUPPORTED FINDINGS\par
+       \vspace{0.18cm}
+       \color{BMSNavy}\fontsize{8.5}{10.3}\selectfont\bfseries
+       p95 latency falls from 420 ms to 180 ms.\par
+       \vspace{0.25cm}
+       \color{BMSText}\mdseries\fontsize{6.8}{8.7}\selectfont
+       Recall remains .78 in the illustrative sample.\par
+       \vspace{0.24cm}
+       The reranker raises recall to .84 at 250 ms p95, below the 420 ms baseline.\par};
+
+    \fill[BMSSoftOrange,rounded corners=2.4pt]
+      ([xshift=7.86cm,yshift=-1.55cm]current page.north west) rectangle
+      ([xshift=15.18cm,yshift=-6.35cm]current page.north west);
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=6.66cm]
+      at ([xshift=8.22cm,yshift=-1.92cm]current page.north west)
+      {\color{BMSMuted}\fontsize{6.0}{7.3}\selectfont\bfseries LIMITS AND NEXT TEST\par
+       \vspace{0.18cm}
+       \color{BMSNavy}\fontsize{8.5}{10.3}\selectfont\bfseries
+       Five runs cannot establish significance.\par
+       \vspace{0.25cm}
+       \color{BMSText}\mdseries\fontsize{6.8}{8.7}\selectfont
+       Report confidence intervals, corpus-specific outcomes, cache warm-up, and failures.\par
+       \vspace{0.24cm}
+       The next experiment should pre-register the recall threshold and repeat the comparison on unseen queries.\par};
+
+    \node[anchor=north west,inner sep=0pt,slide/prose,text width=13.8cm]
+      at ([xshift=1.02cm,yshift=-6.72cm]current page.north west)
+      {\color{BMSNavy}\fontsize{7.0}{8.6}\selectfont\bfseries
+       Reporting rule: distinguish observed values, interpretation, and unanswered questions.\par};
+
+    \LightFrameFooter{Synthetic data · conclusions shown only to demonstrate slide structure}
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}
