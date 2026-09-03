@@ -75,6 +75,7 @@ The experimental values are synthetic and exist only to demonstrate layout. The 
 - explicit connector ports, routing corridors, group-boundary checks, and edge-label conventions;
 - English, Chinese, and mixed-language slide-text guidance;
 - a compile, render, inspect, and repair loop with 400 to 600 dpi local crops for dense geometry;
+- a user-selected independent reviewer subagent for a stronger audit when the additional time and token cost is worthwhile;
 - helper scripts that compile twice, reject relevant LaTeX diagnostics, render pages, and validate all bundled examples.
 
 ## Install
@@ -115,7 +116,9 @@ A custom request may supply a reference deck, screenshots, brand colors, fonts, 
 
 ## Review workflow
 
-Every changed page follows the same production loop:
+Before slide production begins, the skill asks the user to choose between `self-review only` and `self-review + independent reviewer`. The author performs the complete self-review in both modes.
+
+Every changed page follows the same authoring loop:
 
 1. State the page's main message and choose a suitable visual form.
 2. Draft concise text and assign explicit geometry to containers and diagrams.
@@ -123,7 +126,9 @@ Every changed page follows the same production loop:
 4. Render every changed page at 200 dpi and inspect the complete frame.
 5. Render dense junctions, bends, labels, overlays, group entries, and outermost nodes at 400 to 600 dpi.
 6. Repair the source, recompile, and repeat the affected checks.
-7. Present the editable source, PDF, and previews only after the basic layout checks pass.
+7. Mark the artifacts ready for delivery or independent review only after the basic layout checks pass.
+
+When independent review is enabled, a separate read-only reviewer inspects the current PDF, every full-page render in scope, and the required high-resolution crops. The reviewer reports findings to the author, the author repairs and re-renders the slides, and the same reviewer checks the updated artifacts. This continues until the reviewer returns `PASS` or identifies a decision that belongs to the user. When independent review is disabled, the author delivers after completing step 7.
 
 The review covers text clearance, natural line breaks, card padding, title and separator spacing, connector endpoints, arrowhead alignment, route bends, chart labels, formula consistency, and agreement between text and graphics.
 
@@ -131,6 +136,7 @@ Detailed references:
 
 - [page audit checklist](references/page-audit-checklist.md)
 - [render and review loop](references/review-loop.md)
+- [independent reviewer workflow](references/reviewer-workflow.md)
 - [diagram design](references/diagram-design.md)
 - [slide text](references/slide-text.md)
 

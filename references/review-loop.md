@@ -119,14 +119,18 @@ For connector problems:
 
 Do not assume a coordinate edit solved the problem. Recompile and inspect the affected page again. Changes to text, font size, node padding, image dimensions, or line routes all require a new render. Recreate the relevant local crops after a connector, node, or overlay changes; an old crop is not evidence for new geometry.
 
-## 5. Human Draft Gate
+## 5. Author Review Gate
 
-Only present a draft after:
+The author may mark a draft ready only after:
 
 - every changed page has been rendered and inspected;
 - all basic overlap, overflow, proximity, alignment, spacing, and connector defects are fixed;
 - the PDF page count and changed-page placement are correct;
 - editable source, PDF, and page previews are available.
+
+If the user selected `self-review only`, the author may now present the draft. State that the delivery received author self-review only.
+
+If the user selected `self-review + independent reviewer`, meeting this gate starts the reviewer handoff; it does not authorize delivery. Follow [reviewer-workflow.md](reviewer-workflow.md) and present the draft only after the reviewer returns `PASS` or identifies a decision that requires the user.
 
 Human review should focus on message, emphasis, terminology, and preferences—not on defects that visual inspection could have caught first.
 

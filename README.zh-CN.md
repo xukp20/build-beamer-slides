@@ -75,6 +75,7 @@
 - 连接端口、布线路径、分组边界和边标签的明确规范；
 - 英文、中文和中英混排的幻灯片文字规范；
 - 编译、渲染、检查和修复流程，以及针对复杂几何的 400 至 600 dpi 局部截图；
+- 由用户决定是否启用独立 Reviewer subagent，在接受额外时间和 token 开销时获得更严格的审查；
 - 两轮编译、LaTeX 日志检查、页面渲染和全部示例验证脚本。
 
 ## 安装
@@ -115,7 +116,9 @@ git clone https://github.com/xukp20/build-beamer-slides.git \
 
 ## 审查流程
 
-每张修改过的页面都采用相同的制作流程：
+开始制作前，Skill 会请用户选择 `仅制作者自查` 或 `制作者自查 + 独立 Reviewer`。两种模式都要求制作者完成全部自查步骤。
+
+每张修改过的页面都采用相同的制作与自查流程：
 
 1. 明确页面的主要信息，并选择合适的视觉形式。
 2. 精简文字，为容器和图形分配明确的几何空间。
@@ -123,7 +126,9 @@ git clone https://github.com/xukp20/build-beamer-slides.git \
 4. 以 200 dpi 渲染所有修改页，检查完整页面。
 5. 以 400 至 600 dpi 检查复杂连接点、折线、标签、覆盖层、分组入口和最外侧节点。
 6. 修改源码，重新编译，并复查受影响的位置。
-7. 基础排版检查通过后，再提供源码、PDF 和预览图。
+7. 基础排版检查通过后，才可准备交付或提交独立 Reviewer。
+
+启用独立审查时，单独的只读 Reviewer 会检查当前 PDF、范围内的所有整页截图和必要的高分辨率局部截图。Reviewer 将问题反馈给制作者，由制作者修改并重新渲染，再交给同一个 Reviewer 复查。该流程持续到 Reviewer 返回 `PASS`，或提出必须由用户决定的问题。关闭独立审查时，制作者完成第 7 步后即可交付。
 
 审查内容包括文字边距、自然换行、卡片内边距、标题和分隔线间距、连线端点、箭头方向、折线路径、图表标签、公式一致性，以及文字与图形是否表达同一内容。
 
@@ -131,6 +136,7 @@ git clone https://github.com/xukp20/build-beamer-slides.git \
 
 - [页面审查清单](references/page-audit-checklist.md)
 - [渲染与审查流程](references/review-loop.md)
+- [独立 Reviewer 流程](references/reviewer-workflow.md)
 - [图形设计](references/diagram-design.md)
 - [幻灯片文字](references/slide-text.md)
 

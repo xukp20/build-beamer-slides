@@ -14,6 +14,18 @@ Create Beamer slides that are concise, coherent, and ready for human content rev
 - Keep domain content separate from this skill's design rules. Inspect the user's actual sources before drafting factual slide content.
 - Use plain, formal language. Avoid vague business jargon, inflated claims, and unexplained abbreviations unless the audience requires them.
 
+## Choose the Review Mode
+
+- Before substantial slide implementation begins, ask whether the user wants an independent reviewer subagent after the author's self-review. Do not start that implementation until the user answers. Do not ask again when the user has already chosen a mode for the current deck or revision task.
+- Explain the tradeoff plainly: an independent reviewer usually provides a stronger visual audit, but uses additional time and tokens. Offer two choices: `self-review only` and `self-review + independent reviewer`.
+- The author review is mandatory in both modes. Enabling an independent reviewer strengthens the review; it never replaces compilation, rendering, screenshot inspection, repair, or the draft-ready gate performed by the author.
+- If the user selects independent review, read and follow [references/reviewer-workflow.md](references/reviewer-workflow.md). Use a separate read-only subagent when delegation is available. If no independent subagent can be created, disclose that before implementation and ask whether to continue with self-review only or wait.
+- If the user selects self-review only, complete the normal render-and-repair loop and deliver directly after the draft-ready gate. State in the delivery that independent review was not requested.
+
+A concise opening question is sufficient:
+
+> Would you like an independent reviewer subagent after my self-review? It can catch additional visual defects, but it uses more time and tokens. Without it, I will deliver after the mandatory self-review.
+
 ## Select the Visual Style
 
 - Preserve an existing deck's established style unless the user requests a change.
@@ -30,6 +42,7 @@ Create Beamer slides that are concise, coherent, and ready for human content rev
 - Read [references/slide-text.md](references/slide-text.md) before drafting or revising English, Chinese, or mixed-language slide text.
 - Read [references/review-loop.md](references/review-loop.md) before presenting any draft to the user. This review is mandatory for every changed page.
 - Use [references/page-audit-checklist.md](references/page-audit-checklist.md) during the rendered-page review. Trace every connector and inspect every container edge; do not substitute a general impression for the checklist.
+- Read [references/reviewer-workflow.md](references/reviewer-workflow.md) only when the user enables independent review.
 - Read [references/example-gallery.md](references/example-gallery.md) when a user asks for examples, when a tested layout pattern would materially reduce rework, or when forward-testing a change to this skill or a style package.
 - Read only the active style package; do not load unrelated styles.
 
@@ -42,7 +55,8 @@ Create Beamer slides that are concise, coherent, and ready for human content rev
 5. Implement with stable geometry: explicit widths, consistent inner padding, aligned anchors, and reusable styles or macros.
 6. Compile twice, render every changed page at high resolution, and visually inspect it using the mandatory review loop and page-audit checklist. For dense diagrams, also render `400–600 dpi` local crops around decisions, multi-edge nodes, bends, labels, highlighted overlays, group-boundary entries, and tightly placed outermost children.
 7. Record which pages were inspected and any repairs made. For reusable packages or multi-page deliveries, keep a compact audit receipt in task notes or `reviews/`.
-8. Revise and re-render until the page satisfies the draft-ready gate. Only then show the draft to the user and iterate on content or design preferences.
+8. Revise and re-render until the page satisfies the draft-ready gate. The author must complete this step before any reviewer handoff.
+9. If independent review is enabled, hand the review-ready artifacts to the reviewer, repair supported findings, re-render, and return the updated artifacts to the same reviewer until it passes or identifies a decision only the user can make. If independent review is disabled, show the draft to the user after step 8.
 
 ## Draft-Ready Gate
 
@@ -75,7 +89,7 @@ Automated compilation checks are necessary but never replace screenshot inspecti
 
 ## Delivery
 
-Provide the editable `.tex` source, compiled PDF, and previews of the changed pages. State which pages were rendered and inspected, and disclose any remaining limitation that requires the user's content decision.
+Provide the editable `.tex` source, compiled PDF, and previews of the changed pages. State which pages were rendered and inspected, which review mode the user selected, and, when enabled, the independent review result. Disclose any remaining limitation that requires the user's content decision.
 
 Use `scripts/render_and_check.sh` for the standard XeLaTeX workflow when its dependencies are available:
 

@@ -2,4 +2,4 @@ interface:
   display_name: "Build Beamer Slides"
   short_description: "Design and visually review polished Beamer slides"
   brand_color: "#365B73"
-  default_prompt: "Use $build-beamer-slides to create polished Beamer slides with the default light style or a style I provide, and visually review them before showing me."
+  default_prompt: "Use $build-beamer-slides to create polished Beamer slides with the default light style or a style I provide. Ask whether I want an independent reviewer subagent, and visually review the slides before showing me."

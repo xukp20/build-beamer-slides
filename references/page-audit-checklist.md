@@ -2,6 +2,8 @@
 
 Use this checklist after compilation and before showing a changed page to the user. It turns visual review into an explicit audit rather than an informal glance.
 
+The author completes this checklist in both review modes. When independent review is enabled, the reviewer repeats the relevant checks against the current rendered artifacts rather than relying on the author's receipt.
+
 ## Build Evidence
 
 - [ ] Compile twice with the deck's intended engine.
